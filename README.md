@@ -1,6 +1,7 @@
-# aimlink
+# m2mlink
 
-> android aimlink
+> m2mlink project by vue framework . The main technologies used are vue axious scss es6 . 
+this project mainly applies to remote control of remote control device status.
 
 ## Build Setup
 
@@ -14,17 +15,4 @@ npm run dev
 # build for production with minification
 npm run build
 
-# build for production and view the bundle analyzer report
-npm run build --report
 
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
