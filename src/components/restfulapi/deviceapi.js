@@ -1,17 +1,8 @@
 import {apiGet, apiPut} from "../../assets/js/baseapi";
 
-    let getDeviceApi = function(gid, deviceKeyword = "") {
+    let getDeviceApi = function() {
         return new Promise((resolve, reject) => {
-            let groupid = gid;
-            let devicegetdata = {
-                pageSize: 10000,
-                no: 1,
-                orderType: "did",
-                like: deviceKeyword,
-                _: new Date().getTime(),
-            };
-
-            apiGet("rmm/v1/devicegroups/" + groupid + "/devices", devicegetdata).then((data) => {
+            apiGet("/api/api/clients").then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);

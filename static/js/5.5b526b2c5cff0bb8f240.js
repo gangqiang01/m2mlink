@@ -1,0 +1,2 @@
+webpackJsonp([5],{"9P5o":function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var s={render:function(){var e=this.$createElement;return(this._self._c||e)("h1",[this._v("\n    messageList\n")])},staticRenderFns:[]},l=t("C7Lr")(null,s,!1,null,null,null);n.default=l.exports}});
+//# sourceMappingURL=5.5b526b2c5cff0bb8f240.js.map

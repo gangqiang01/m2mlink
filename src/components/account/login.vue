@@ -17,7 +17,9 @@
 </template>
 
 <script>
-    import http from '../../assets/js/http'
+    import {apiPost} from '../../assets/js/baseapi'
+    import {loginApi} from '../restfulapi/authapi'
+    import handleResponse from "../restfulapi/handleresponse"
 
     export default {
         name: 'login',
@@ -32,12 +34,12 @@
                 },
 
                 rules2: {
-                username: [
-                    { required: true, message: '请输入账号', trigger: 'blur' }
-                ],
-                password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' }
-                ]
+                    username: [
+                        { required: true, message: '请输入账号', trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: '请输入密码', trigger: 'blur' }
+                    ]
                 },
                 checked: false
             }
@@ -46,24 +48,14 @@
             handleSubmit2() {
                 if(this.loading) return;
                 this.loading = !this.loading
-                let data = {}
-                data.username = this.form.username
-                data.password = this.form.password
-                data._now = Date.parse(new Date());
-                data.redirectUri = '172.21.73.144:8081';
-                this.apiPost('/rmm/v1/sso/login', data).then((res) => {
+                loginApi(this.form.username, this.form.password).then((res) => {
                     this.loading = false;
-                    this.handleResponse(res, (res) => {
-                        if(res.status == "passed"){
-                            this.apiGet("rmm/v1/accounts/login").then((res) =>{
-                                this.handleResponse(res, (res => {
-                                    if(res.result){
-                                        // Cookies.setCookie("sessionId", data.sessionId, 60);
-                                        router.replace({name:'main'});
-                                    }
-                                }))    
-                            })
+                    handleResponse(res, (res) => {
+                        if(res.result.status == "success"){
+                            cookie.setCookie("token", res.result.token, 60);
+                            router.replace({name:'main'});
                         }
+                        
                     })
                 })
                
@@ -76,7 +68,6 @@
                 }
             })
         },
-        mixins: [http]
     }
 </script>
 

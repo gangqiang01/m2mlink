@@ -33,6 +33,9 @@
                                                 <span>device: </span>{{item.agent_name}}
                                             </li>
                                             <li>
+                                                <span>account name:</span>{{item.account_name}}
+                                            </li>
+                                            <li>
                                                 <span>type:</span>{{item.type}}
                                             </li>
                                             <li>
@@ -81,7 +84,7 @@
                             <b>Last Accessed:</b>{{logintime}}
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <b>Device Bound:</b>{{devicecount}}
+                            <b>Device Connected:</b>{{devicecount}}
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <el-button type="primary" size="small" class="fr" @click="loginout()">
@@ -158,7 +161,7 @@
     .msgContainer{
         max-height: 22rem;
         max-width: 20rem;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
     }
     .msgHeader{
@@ -169,7 +172,6 @@
 <script>
     import {getAccount, getOnlineDeviceCountApi, getAccountApi} from '../restfulapi/userinfoapi'
     import handleResponse from "../restfulapi/handleresponse"
-    import websockconnect from '@/assets/js/socket'
     import {mapState} from 'vuex'
     import {setLang} from '../../lang/lang'
 
@@ -212,30 +214,6 @@
                 this.$router.replace('/');
             },
 
-            websocket(){
-                let that = this
-                let ws = websockconnect();
-                ws.onopen = (evt) => { 
-                    console.log("Connection open ..."); 
-                };
-                ws.onmessage = (eventJson) => {
-                    console.log("websocket msg enter");
-                    let msgOrgData = JSON.parse(eventJson.data).events;
-                    if(msgOrgData.length != 0){
-                        msgOrgData = msgOrgData.map((val)=> {
-                            return JSON.parse(val);
-                        });
-                        that.msgData = that.msgData.concat(msgOrgData);
-                        window.localStorage.setItem("msgData", JSON.stringify(that.msgData));
-                    }
-                };
-                
-                ws.onclose = (evt) => {
-                    console.log("Connection closed.");
-                    ws = null;
-                };
-            },
-
             markAll(){
                 this.msgData = [];
                 window.localStorage.removeItem("msgData");   
@@ -252,15 +230,13 @@
                     let msgLocalData = localStorage.getItem('msgData');
                     msgLocalData = JSON.parse(msgLocalData);
                     this.msgData = msgLocalData;
+                    
                 }               
             },
             switchLang(lang){
                 setLang(lang);
             }
             
-        },
-        mounted(){
-            this.websocket();
         },
 
         created(){
@@ -271,7 +247,7 @@
         computed: {
             msgCount: {
                 get(){
-                    return this.msgData.length
+                    return this.msgData.length> 0? this.msgData.length: '';
                 },
                 set(val){
                     this.msgCount = val;

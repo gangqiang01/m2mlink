@@ -11,14 +11,17 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api':{
-            target: 'https://portal-rmm.wise-paas.com',
-            pathRewrite: {"^/api" : ""}
-        }
+        '/api': {   
+            target: 'http://172.21.73.144:30010', 
+            changeOrigin: true,  
+            pathRewrite: { 
+            '^/api': '/' 
+            } 
+        } 
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '172.21.73.144', // can be overwritten by process.env.HOST
     port: 8088, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -49,7 +52,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/m2mlink/',
 
     /**
      * Source Maps

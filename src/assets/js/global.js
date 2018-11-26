@@ -1,3 +1,4 @@
+
 const commonFn = {
     shallowRefresh(name){
         router.replace({path: '/home/refresh', query: {name: name}})
@@ -15,6 +16,54 @@ const commonFn = {
         setTimeout(() => {
         store.dispatch('showLoading', true)
         }, 0)
+    },
+
+    setDeviceStatus(val){
+        store.dispatch('deviceConnect',val);
+    },
+
+    setSelectedDeviceAgent(val){
+        store.dispatch('selectDeviceAgent', val)
+    },
+
+    swalWarnDo(subject){
+        return swal({
+            title: "Are you sure?",
+            text: subject,
+            icon: "warning",
+            buttons: true,  
+            dangerMode: true,
+        })
+    },
+
+    swalSuccessDo(subject){
+        return swal({
+            title: "Are you sure?",
+            text: subject,
+            icon: "success",
+            buttons: true,  
+            dangerMode: true,
+        })
+    },
+
+    swalErrorDo(subject){
+        return swal({
+            title: "Are you sure?",
+            text: subject,
+            icon: "error",
+            buttons: true,  
+            dangerMode: true,
+        })
+    },
+
+    swalInfoDo(subject){
+        return swal({
+            title: "Are you sure?",
+            text: subject,
+            icon: "info",
+            buttons: true,  
+            dangerMode: true,
+        })
     },
 
     getFromNowTimes(fday, fmonth){

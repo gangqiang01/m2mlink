@@ -1,9 +1,9 @@
 const systemMonitorPlugin = "ProcessMonitor";
 const aimSdkPlugin = "AimSdk";
-const droidRoot = "DroidRoot";
 const getRepoAppUrl =  "http://172.21.73.109:30001/vuethink/php/index.php/admin/Restrepo/getapkinfo/reponame/aim-market";
-const getRepoToken = "http://172.21.73.109:30001/vuethink/php/index.php/admin/Restrepo/gettoken";
+const getRepoTokenUrl = "http://172.21.73.109:30001/vuethink/php/index.php/admin/Restrepo/gettoken";
 const repoAppBaseDownloadUrl = "http://172.21.73.109:30002"
+const droidRoot = "DroidRoot"
 const settingsStatusSensor = {
     wifi: "/devicectrl/ctrl-wifi",
     bluetooth: "/devicectrl/ctrl-bluetooth",
@@ -32,14 +32,14 @@ const disableAppArray = ["org.flyve.mdm.agent"];
 export {
     systemMonitorPlugin,
     aimSdkPlugin,
-    droidRoot,
     getRepoAppUrl,
-    getRepoToken,
+    getRepoTokenUrl,
     repoAppBaseDownloadUrl,
     settingsStatusSensor,
     getAppInfoSensor,
     appFuncSensor,
-    disableAppArray
+    disableAppArray,
+    droidRoot
 }
 
 

@@ -19,17 +19,18 @@ import './assets/css/global.scss';
 
 window.axios = axios;
 window.swal = swal;
-window.Cookies = Cookies;
+window.cookie = Cookies;
 window._g = _g;
 window.store = store;
 window.router = router;
 window.moment = moment;
 
-axios.defaults.baseURL = 'https://portal-rmm.wise-paas.com';
-axios.defaults.timeout = 1000 * 200
-axios.defaults.withCredentials = true
-axios.defaults.crossDomain = true
-axios.defaults.headers['Content-Type'] = 'application/json'
+// axios.defaults.baseURL = 'http://172.21.73.144:30010';
+// axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
+// axios.defaults.timeout = 1000 * 200;
+// axios.defaults.crossDomain = true;
+// axios.defaults.async = true
+// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
 Vue.config.productionTip = false
 

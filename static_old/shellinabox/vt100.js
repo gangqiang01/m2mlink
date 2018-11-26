@@ -32,7 +32,7 @@
 // #define MOUSE_UP       1
 // #define MOUSE_CLICK    2
 
-export default function VT100(container) {
+function VT100(container) {
     if (typeof linkifyURLs == 'undefined' || linkifyURLs <= 0) {
       this.urlRE            = null;
     } else {

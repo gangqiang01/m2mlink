@@ -44,5 +44,4 @@ function terminalWebsocket() {
         _WebSocket.close();
     }
 }
-let _terminalWebsocket = new terminalWebsocket();
-export default _terminalWebsocket;
+var _terminalWebsocket = new terminalWebsocket();

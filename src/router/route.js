@@ -112,35 +112,17 @@ let route = [
         component: login,
         name: 'login',
         beforeEnter: (to, from, next) => {
-            auth.loginout().then((res) => {
-                if (res){
-                    next()
-                }else{
-                    console.log("loginout err");
-                    next()
-                }
-            })
+            cookie.setCookie("token",'',0)
+            next();
         }
     },
     {
         path: '/main',
         name: 'main',
         component: main,
-        beforeEnter: (to, from, next) => {
-            redirectByAuth().then((path) => {       
-                if(path === "/main"){
-                    next()
-                }else{
-                    swal('','login expires','error').then(() =>{
-                        next(path) 
-                    })
-                }
-   
-            }).catch((err) =>{
-                console.log(err);
-            });
+        // beforeEnter: (to, from, next) => {
             
-        },
+        // },
         children: childRoute,
         redirect:'/main/device/list'    
     },
@@ -150,15 +132,5 @@ let route = [
     }
     
 ]
-
-function redirectByAuth(){
-    return auth.loginstatus().then(function(data){
-        if(data){
-            return '/main';
-        }else{
-            return '/';
-        }
-    })  
-}
 
 export default route

@@ -8,10 +8,6 @@
 
 // IE does not define XMLHttpRequest by default, so we provide a suitable
 // wrapper.
-import _terminalWebsocket from "./terminalSocket";
-import VT100 from "./vt100";
-
-
 $(window).load(function () {
     new ShellInABox();
 })
