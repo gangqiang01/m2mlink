@@ -71,13 +71,13 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item class="text-center" >
                             <img src="@/assets/imgs/face_black.png" alt="">
-                            <p> {{username}}</p>
+                            <p style="font-size: 23px"> {{username}}</p>
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <b>Last Accessed:</b>{{logintime}}
+                            <b class="w-150">Last Accessed:</b>{{logintime}}
                         </el-dropdown-item>
                         <el-dropdown-item>
-                            <b>Device Connected:</b>{{devicecount}}
+                            <b class="w-150">Device Connected:</b>{{devicecount}}
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <el-button type="primary" size="small" class="fr" @click="loginout()">
@@ -168,6 +168,8 @@
     import {mapState} from 'vuex'
     import {setLang} from '../../lang/lang'
     import {eventSourceConn, handleMsg} from '../restfulapi/eventSourceApi'
+    import {getDeviceApi} from '../restfulapi/deviceapi'
+    import handleResponse from '../restfulapi/handleresponse'
 
     export default{
         name: 'mainHeader',
@@ -256,7 +258,7 @@
 
         created(){
             this.showMsg()
-            // this.getuserinfo();   
+            this.getuserinfo();   
         },
 
         computed: {

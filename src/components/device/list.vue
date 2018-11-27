@@ -5,10 +5,33 @@
         </div>
         <div class="m-t-20">
             <el-table
+                id="deviceTable"
                 :data="deviceList"
                 tooltip-effect="dark"
-                style="width: 100%">
-
+                style="width: 100%"
+                @expand-change="handleExpandChange"
+                >
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="table-expand">
+                            <el-form-item label="Device Manufacture:">
+                                <span>{{manufacturer}}</span>
+                            </el-form-item>
+                            <el-form-item label="Device Model:">
+                                <span>{{modelNumber}}</span>
+                            </el-form-item>
+                            <el-form-item label="Physical Address:">
+                                <span>{{serialNumber}}</span>
+                            </el-form-item>
+                            <el-form-item label="Firmware Version:">
+                                <span>{{firmwareVersion}}</span>
+                            </el-form-item>
+                            <el-form-item label="Support modes:">
+                                <span>{{supportedModes}}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
                 <el-table-column
                 prop="endpoint"
                 label="Agent ID"
@@ -57,9 +80,9 @@
 </template>
 
 <script>
-    import {getDeviceApi, deleteDeviceApi} from '../restfulapi/deviceapi'
+    import {getDeviceApi, getDeviceDetailApi} from '../restfulapi/deviceapi'
     import handleResponse from '../restfulapi/handleresponse'
-
+    import  {deviceDetail} from '../../assets/js/deviceproperty'
     import {mapState} from 'vuex'
 
     export default{
@@ -74,6 +97,11 @@
                 currentPage: 1,
                 isshow: false,
                 eventSource: null,
+                manufacturer: '',
+                modelNumber: '',
+                serialNumber: '',
+                firmwareVersion: '',
+                supportedModes: ''
             }
         },
         methods:{
@@ -95,22 +123,22 @@
                 this.currentPage = currentPage;
                 this.deviceList = this.deviceTableData.slice((currentPage-1)*this.limit,currentPage*this.limit)
             },
-
-            // doEventSource(){
-            //     eventSourceConn();
-            //     handleMsg("REGISTRATION", this.getAllDevices, false);
-            //     handleMsg("DEREGISTRATION", this.getAllDevices, false);     
-            // }
-
-
+            handleExpandChange(val){
+                let AgentId = val.endpoint;
+                for(let key in deviceDetail){
+                    getDeviceDetailApi(AgentId, deviceDetail[key]).then((data) => {
+                        handleResponse(data, (res) => {
+                            this[key] = res.content.value;
+                        })
+                    })
+                }
+                
+            }
         },
 
         created(){
             this.getAllDevices();
         },    
-        // mounted(){
-        //     this.doEventSource();
-        // },
 
         watch:{
             onlineDeviceCount(){
@@ -125,9 +153,19 @@
         }  
     }
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
 @import "@/assets/css/colors.scss";
-    .el-table thead{
-        backgroud-color: $primary-color !important;
-    }
+    #deviceTable{
+        .table-expand{
+            font-size: 0;
+            .el-form-item{
+                margin-right: 0;
+                margin-bottom: 0;
+                width: 50%;
+                label {
+                    color: $darkgray-color;
+                }
+            }
+        } 
+    } 
 </style>
