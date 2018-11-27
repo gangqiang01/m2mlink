@@ -30,30 +30,23 @@
                                     <div slot="content">
                                         <ul>
                                             <li>
-                                                <span>device: </span>{{item.agent_name}}
+                                                <span>device Agent: </span>{{item.endpoint}}
                                             </li>
                                             <li>
-                                                <span>account name:</span>{{item.account_name}}
+                                                <span>agent Version:</span>{{item.lwM2MmVersion}}
                                             </li>
                                             <li>
-                                                <span>type:</span>{{item.type}}
-                                            </li>
-                                            <li>
-                                                <span>Date:</span>{{item.ts.$date|time}}
+                                                <span>Date:</span>{{item.registrationDate|time}}
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="m-l-5" v-if="item.severity == 'ERROR'">
+                                    <div class="m-l-5" v-if="item.type == 'DEREGISTRATION'">
                                         <i class="fa fa-times-circle fa-x c-danger p-r-5"></i>
-                                        {{item.subtype.toLowerCase()}}
+                                        {{item.type.toLowerCase()}}
                                     </div>
-                                    <div class="m-l-5" v-if="item.severity == 'WARNING'">
-                                        <i class="fa fa-exclamation-triangle fa-x c-warn p-r-5"></i>
-                                        {{item.subtype.toLowerCase()}}
-                                    </div>
-                                    <div class="m-l-5" v-else>
+                                    <div class="m-l-5" v-if="item.type == 'REGISTRATION'">
                                         <i class="fa fa-info-circle fa-x c-success p-r-5" ></i>
-                                        {{item.subtype.toLowerCase()}}
+                                        {{item.type.toLowerCase()}}
                                     </div>
                                 </el-tooltip>   
                             </el-dropdown-item>
@@ -78,7 +71,7 @@
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item class="text-center" >
                             <img src="@/assets/imgs/face_black.png" alt="">
-                            <p> {{useremail}}</p>
+                            <p> {{username}}</p>
                         </el-dropdown-item>
                         <el-dropdown-item>
                             <b>Last Accessed:</b>{{logintime}}
@@ -170,10 +163,11 @@
     }
 </style>
 <script>
-    import {getAccount, getOnlineDeviceCountApi, getAccountApi} from '../restfulapi/userinfoapi'
-    import handleResponse from "../restfulapi/handleresponse"
+    // import {getAccount, getOnlineDeviceCountApi, getAccountApi} from '../restfulapi/userinfoapi'
+    // import handleResponse from "../restfulapi/handleresponse"
     import {mapState} from 'vuex'
     import {setLang} from '../../lang/lang'
+    import {eventSourceConn, handleMsg} from '../restfulapi/eventSourceApi'
 
     export default{
         name: 'mainHeader',
@@ -181,7 +175,7 @@
             return {
                 img:"",
                 loginstate:'Login Out',
-                useremail:'',
+                username:'',
                 logintime:'',
                 devicecount:'',
                 msgData: [],
@@ -196,16 +190,11 @@
             },
 
             getuserinfo(){
-                getAccountApi().then((data) => {
-                    handleResponse(data, (res) => {
-                        console.log(res);
-                        this.useremail =  res["accounts"][0].name
-                        this.logintime = moment(res["accounts"][0].login_unix_ts).format("YYYY-MM-DD HH:mm:ss")
-                    })
-                })
-                getOnlineDeviceCountApi().then((data) => {
-                    handleResponse(data, (res) => {
-                        this.devicecount = res.connected;
+                this.username = localStorage.getItem("username");
+                this.logintime = localStorage.getItem("logintime");
+                getDeviceApi().then((data) => {
+                    handleResponse(data, (res) => { 
+                        this.devicecount = res.length;
                     })
                 })
             },
@@ -226,22 +215,48 @@
 
             showMsg(){
                 if(window.localStorage.getItem("msgData") != null){
-                    
                     let msgLocalData = localStorage.getItem('msgData');
                     msgLocalData = JSON.parse(msgLocalData);
                     this.msgData = msgLocalData;
-                    
                 }               
             },
             switchLang(lang){
                 setLang(lang);
-            }
+            },
+
+            doEventSource(){
+                eventSourceConn();
+                handleMsg("REGISTRATION", (type, data) => {
+                    if(data){
+                        let count = this.onlineDeviceCount; 
+                        count++; 
+                        _g.onlineDeviceCount(count);
+                        let msgObj = JSON.parse(data);
+                        msgObj.type = type;
+                        this.msgData.push(msgObj);
+                        window.localStorage.setItem("msgData", JSON.stringify(this.msgData));
+                    }
+                    
+                }, false);
+                handleMsg("DEREGISTRATION", (type, data) => {
+                    if(data){
+                        let count = this.onlineDeviceCount; 
+                        count--;
+                        _g.onlineDeviceCount(count);
+                        let msgObj = JSON.parse(data);
+                        msgObj.type = type;
+                        this.msgData.push(msgObj);
+                        window.localStorage.setItem("msgData", JSON.stringify(this.msgData));
+                    }
+                   
+                }, false);     
+            },
             
         },
 
         created(){
             this.showMsg()
-            this.getuserinfo();   
+            // this.getuserinfo();   
         },
 
         computed: {
@@ -263,7 +278,15 @@
                 }
                 
             },
+            ...mapState({
+                onlineDeviceCount: "onlineDeviceCount"
+            }),  
+
         },
+
+        mounted(){
+            this.doEventSource();
+        }
     }
 </script>
 

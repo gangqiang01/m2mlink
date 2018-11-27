@@ -3,10 +3,12 @@ const mutations = {
     showLoading(state, status) {
         state.globalLoading = status
     },
-    deviceConnect(state, status){
-        state.connectStatus = status;
+    onlineDeviceCount(state, status){
+        state.onlineDeviceCount = status;
     },
- 
+    systemImg(state, status){
+        state.systemImg = status;
+    }
 }
 
 export default mutations

@@ -11,7 +11,12 @@ let eventSourceConn = function(){
 }
 
 let handleMsg = function(type, cb, mode){
-    eventSource.addEventListener(type, cb, mode);
+    let dcb = function(msg){
+        window.setTimeout(() => {
+            cb(msg.type, msg.data);
+        }, 1000)
+    }
+    eventSource.addEventListener(type, dcb, mode);
 }
 
 export{

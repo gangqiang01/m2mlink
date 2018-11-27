@@ -59,7 +59,8 @@
 <script>
     import {getDeviceApi, deleteDeviceApi} from '../restfulapi/deviceapi'
     import handleResponse from '../restfulapi/handleresponse'
-    import {eventSourceConn, handleMsg} from '../restfulapi/eventSourceApi'
+
+    import {mapState} from 'vuex'
 
     export default{
         name: 'deviceList',
@@ -95,19 +96,32 @@
                 this.deviceList = this.deviceTableData.slice((currentPage-1)*this.limit,currentPage*this.limit)
             },
 
-            doEventSource(){
-                eventSourceConn();
-                handleMsg("REGISTRATION", this.getAllDevices, false);
-                handleMsg("DEREGISTRATION", this.getAllDevices, false);     
-            }
+            // doEventSource(){
+            //     eventSourceConn();
+            //     handleMsg("REGISTRATION", this.getAllDevices, false);
+            //     handleMsg("DEREGISTRATION", this.getAllDevices, false);     
+            // }
 
 
         },
+
         created(){
             this.getAllDevices();
         },    
-        mounted(){
-            this.doEventSource();
+        // mounted(){
+        //     this.doEventSource();
+        // },
+
+        watch:{
+            onlineDeviceCount(){
+                this.getAllDevices();
+            }
+        },
+        
+        computed:{
+            ...mapState({
+                onlineDeviceCount: "onlineDeviceCount"
+            }),   
         }  
     }
 </script>

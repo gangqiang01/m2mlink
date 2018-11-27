@@ -26,7 +26,7 @@
         data() {
             return {
                 title: '',
-                systemName: 'AIM Android Rmm extension',
+                systemName: 'M2M link',
                 loading: false,
                 form: {
                     username: '',
@@ -53,6 +53,9 @@
                     handleResponse(res, (res) => {
                         if(res.result.status == "success"){
                             cookie.setCookie("token", res.result.token, 60);
+                            localStorage.setItem("username", this.form.username);
+                            let nowTime = moment(new Date().getTime()).format("YYYY-MM-DD HH:mm:ss");
+                            localStorage.setItem("logintime", nowTime);
                             router.replace({name:'main'});
                         }
                         

@@ -1,6 +1,7 @@
 const state = {
-  globalLoading: true,
-  connectStatus: false,
+    globalLoading: true,
+    onlineDeviceCount: 0,
+    systemImg: 'android'
 }
 
 export default state

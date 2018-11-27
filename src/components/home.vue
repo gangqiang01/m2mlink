@@ -168,9 +168,7 @@
             collapse(){
                 this.isCollapse = this.isCollapse? false: true;
             },
-            handleScroll(){
 
-            }
         },
 
         created(){
@@ -179,7 +177,7 @@
 
         computed: {
             ...mapState({
-                showLoading: "globalLoading"
+                showLoading: "globalLoading",
             }),        
         },
 

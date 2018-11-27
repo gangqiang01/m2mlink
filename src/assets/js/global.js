@@ -18,12 +18,8 @@ const commonFn = {
         }, 0)
     },
 
-    setDeviceStatus(val){
-        store.dispatch('deviceConnect',val);
-    },
-
-    setSelectedDeviceAgent(val){
-        store.dispatch('selectDeviceAgent', val)
+    onlineDeviceCount(val){
+        store.dispatch('onlineDeviceCount', val)
     },
 
     swalWarnDo(subject){
