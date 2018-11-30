@@ -168,8 +168,8 @@
     import {mapState} from 'vuex'
     import {setLang} from '../../lang/lang'
     import {eventSourceConn, handleMsg} from '../restfulapi/eventSourceApi'
-    import {getDeviceApi} from '../restfulapi/deviceapi'
-    import handleResponse from '../restfulapi/handleresponse'
+    import {getDeviceApi} from '../restfulapi/deviceApi'
+    import handleResponse from '../restfulapi/handleResponse'
 
     export default{
         name: 'mainHeader',
@@ -259,6 +259,15 @@
         created(){
             this.showMsg()
             this.getuserinfo();   
+        },
+
+        watch:{
+            msgData:{
+                handler(newval, oldval){
+                    this.getuserinfo();
+                },
+                deep: true
+            }
         },
 
         computed: {

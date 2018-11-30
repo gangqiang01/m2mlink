@@ -1,4 +1,4 @@
-import {apiGet, apiPost} from "../../assets/js/baseapi";
+import {apiGet, apiPost} from "../../assets/js/baseApi";
 
 
 let loginApi = function(username, password){

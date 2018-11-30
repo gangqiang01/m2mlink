@@ -12,7 +12,6 @@ const messageList = resolve => require(['@/components/message/list'], resolve)
 const vncList = resolve => require(['@/components/vnc/list'], resolve)
 
 import main from '@/components/home'
-import auth from '@/assets/js/auth'
 
 let childRoute = [
     {

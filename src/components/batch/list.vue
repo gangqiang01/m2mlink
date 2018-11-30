@@ -9,7 +9,7 @@
 
 <script>
     // require ("@/mock/mock.js")
-    import {apiGet} from "@/assets/js/baseapi"
+    import {apiGet} from "@/assets/js/baseApi"
     export default{
         data(){
             return {

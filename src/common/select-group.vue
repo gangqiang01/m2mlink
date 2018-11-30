@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="m-t-30">
         <!-- <div class="text-center m-t-20">
             <i class="fa fa-object-group fa-5x m-b-10 deviceIcon"></i>
             <p class="deviceTitle"> Device Group</p>
@@ -12,7 +12,7 @@
                 </el-option>    
             </el-select>  
         </div> -->
-        <div class="text-center m-t-30">
+        <div class="text-center m-t-80">
             <i class="fa fa-tablet fa-5x  m-b-10 deviceIcon" ></i>
             <p class="deviceTitle">Device list</p>
             <el-select v-model="devValue" ref="devId" class="m-t-10" @change = "deviceChange" size="small">
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-    import {getDeviceApi} from '../components/restfulapi/deviceapi'
-    import {getDeviceGroupApi} from '../components/restfulapi/devicegroupapi'
-    import handleResponse from '../components/restfulapi/handleresponse'
+    import {getDeviceApi} from '../components/restfulapi/deviceApi'
+    import {getDeviceGroupApi} from '../components/restfulapi/deviceGroupApi'
+    import handleResponse from '../components/restfulapi/handleResponse'
     import {mapState} from 'vuex'
 
     export default{
@@ -90,7 +90,11 @@
             ...mapState({
                 onlineDeviceCount: "onlineDeviceCount"
             }),   
-        }  
+        },
+
+        created(){
+            this.getAllDevices();
+        }
 
     }
 </script>
@@ -99,8 +103,6 @@
     .deviceIcon{
         color: $primary-color;
     }
-    .deviceTitle{
-        // color: $
-    }
+    
 </style>
 

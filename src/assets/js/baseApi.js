@@ -98,6 +98,7 @@ let repoApiGet = function(myUrl, object, token){
 
     getUrl = encodeURI(getUrl);
     return new Promise((resolve, reject) => {
+        axios.defaults.headers['accesstoken'] = token;
         axios.get(getUrl).then((response) => {
             resolve(response)
         }).catch((err) => {

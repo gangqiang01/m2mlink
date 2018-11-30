@@ -1,4 +1,4 @@
-import {apiPost} from "../../assets/js/baseapi";
+import {apiPost} from "../../assets/js/baseApi";
 
 let getVNCPropertysApi = function(selectedAgentId, vnc_mode, repeaterId){
     return new Promise((resolve, reject) => {

@@ -17,9 +17,8 @@
 </template>
 
 <script>
-    import {apiPost} from '../../assets/js/baseapi'
-    import {loginApi} from '../restfulapi/authapi'
-    import handleResponse from "../restfulapi/handleresponse"
+    import {loginApi} from '../restfulapi/authApi'
+    import handleResponse from "../restfulapi/handleResponse"
 
     export default {
         name: 'login',

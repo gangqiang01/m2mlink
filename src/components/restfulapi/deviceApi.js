@@ -1,4 +1,4 @@
-import {apiGet, apiPut} from "../../assets/js/baseapi";
+import {apiGet, apiPut} from "../../assets/js/baseApi";
 
     let getDeviceApi = function() {
         return new Promise((resolve, reject) => {
@@ -10,17 +10,19 @@ import {apiGet, apiPut} from "../../assets/js/baseapi";
         })
     }
 
-    let getDeviceDetailApi = function(agentId, path){
+    let getDeviceDetailApi = function(agentId, sensorId){
         return new Promise((resolve, reject) => {
-            let url = "/api/api/clients/"+ agentId+ path
+            let url = "/api/api/clients/"+ agentId+ sensorId
             apiGet(url).then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);
             })
         })
-        
     }
+
+
+    
 
     let deleteDeviceApi = function(multipleTable) {
         return new Promise((resolve, reject) => {

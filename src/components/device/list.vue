@@ -80,9 +80,9 @@
 </template>
 
 <script>
-    import {getDeviceApi, getDeviceDetailApi} from '../restfulapi/deviceapi'
-    import handleResponse from '../restfulapi/handleresponse'
-    import  {deviceDetail} from '../../assets/js/deviceproperty'
+    import {getDeviceApi, getDeviceDetailApi} from '../restfulapi/deviceApi'
+    import handleResponse from '../restfulapi/handleResponse'
+    import  {deviceDetail} from '../../assets/js/deviceProperty'
     import {mapState} from 'vuex'
 
     export default{
