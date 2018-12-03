@@ -171,7 +171,12 @@
                 }
             },
            switchChange(setSensorVal, cid){
-
+                if(androidControl[cid] === undefined){
+                    swal("", "this function is not supported", 'info').then(() => {
+                        this[cid] = !this[cid];
+                    });
+                    return;
+                }
                 let setSensorId = androidControl[cid];
                 if(this.selectedAgentId == ''){
                     swal("","Please select your device","info").then(() => {
@@ -190,6 +195,11 @@
                 })
             },
             powerAction(cid){
+
+                if(androidControl[cid] === undefined){
+                    swal("", "this function is not supported", 'info');
+                    return;
+                }
                 let setSensorId = androidControl[cid];
                 if(this.selectedDeviceId == ''){
                     swal("","Please select your device","info")
@@ -218,13 +228,8 @@
             },
 
             getDeviceOption(msg){
+                Object.assign(this.$data, this.$options.data())
                 this.selectedAgentId = msg;
-                this.wifi = false;
-                this.bluetooth = false;
-                this.gps = false;
-                this.lockscreen = false;
-                this.homeKey = false;
-                this.backKey = false;
                 this.getSensorStatus();
             }
         },

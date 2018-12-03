@@ -311,6 +311,10 @@
 	
 
             setAppSensor(cid, setSensorVal){
+                if(appControl[cid] === undefined){
+                    swal("", "this function is not supported", 'info');
+                    return;
+                }
                 if(cid === "removeApp" || cid === "disableApp" || cid === "installApp" || cid === "stopApp"){
                     _g.swalWarnDo(cid).then((willfunc) => {
                         if (willfunc) {
@@ -357,20 +361,15 @@
                     var versionname = selectedAppData.latestversion;
                     var reponame = "95cbbb6613127668fdd633b2cc006d47";
                     setsensorval = repoAppBaseDownloadUrl + "/"+ reponame +"/" + pkgname +　"/" + versionname + "/" + appname;
+                    cid = "installApp"; 
                 }else{
                     setsensorval = selectedAppData.package;
                 }
-                cid = "installApp";  
                 this.setAppSensor(cid, setsensorval);
             },
 
              getDeviceOption(msg){ 
-                this.appTableData = [];
-                this.appOptions = [];
-                this.startApp = '';
-                this.stopApp = '';
-                this.enableApp = '';
-                this.disableApp = '';
+                Object.assign(this.$data, this.$options.data())
                 this.selectedAgentId = msg;
                 this.getSensorStatus();
             },

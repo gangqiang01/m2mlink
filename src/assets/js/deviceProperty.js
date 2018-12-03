@@ -97,7 +97,8 @@ const allProperty = {
 
 const deviceDetail = {
     manufacturer: '/3/0/0',
-    modelNumber: '/3/0/1',
+    systemVersion: '/40001/0/27003',
+    boardName: '/40001/0/27004',
     serialNumber: '/3/0/2',
     firmwareVersion: '/3/0/3',
     supportedModes: '/3/0/16',

@@ -9,29 +9,7 @@
                 :data="deviceList"
                 tooltip-effect="dark"
                 style="width: 100%"
-                @expand-change="handleExpandChange"
                 >
-                <el-table-column type="expand">
-                    <template slot-scope="props">
-                        <el-form label-position="left" inline class="table-expand">
-                            <el-form-item label="Device Manufacture:">
-                                <span>{{manufacturer}}</span>
-                            </el-form-item>
-                            <el-form-item label="Device Model:">
-                                <span>{{modelNumber}}</span>
-                            </el-form-item>
-                            <el-form-item label="Physical Address:">
-                                <span>{{serialNumber}}</span>
-                            </el-form-item>
-                            <el-form-item label="Firmware Version:">
-                                <span>{{firmwareVersion}}</span>
-                            </el-form-item>
-                            <el-form-item label="Support modes:">
-                                <span>{{supportedModes}}</span>
-                            </el-form-item>
-                        </el-form>
-                    </template>
-                </el-table-column>
                 <el-table-column
                 prop="endpoint"
                 label="Agent ID"
@@ -61,7 +39,40 @@
                         <span >online</span>
                     </template>
                 </el-table-column>
+                <el-table-column
+                label="Device Details"
+                min-width="120"
+                align="center">
+                    <template slot-scope="scope">
+                        <i class="fa fa-eye fa-x c-primary pointer" @click="getDeviceDetails(scope.row.endpoint)"></i>
+                    </template>
+                </el-table-column>
             </el-table>
+            <el-dialog title="Device Detail" :visible.sync="dialogFormVisible">
+                <el-form >
+                    <el-form-item label="Device Manufacture:" :label-width="formLabelWidth">
+                        <span>{{form.manufacturer}}</span>
+                    </el-form-item>
+                    <el-form-item label="System Version:" :label-width="formLabelWidth">
+                        <span>{{form.systemVersion}}</span>
+                    </el-form-item>
+                    <el-form-item label="Board Name:" :label-width="formLabelWidth">
+                        <span>{{form.boardName}}</span>
+                    </el-form-item>
+                    <el-form-item label="Physical Address:" :label-width="formLabelWidth">
+                        <span>{{form.serialNumber}}</span>
+                    </el-form-item>
+                    <el-form-item label="Firmware Version:" :label-width="formLabelWidth">
+                        <span>{{form.firmwareVersion}}</span>
+                    </el-form-item>
+                    <el-form-item label="Support modes:" :label-width="formLabelWidth">
+                        <span>{{form.supportedModes}}</span>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                </div>
+            </el-dialog>
             <div class="m-t-10 cf">
                 <el-pagination
                 @current-change="handleCurrentChange"
@@ -97,11 +108,16 @@
                 currentPage: 1,
                 isshow: false,
                 eventSource: null,
-                manufacturer: '',
-                modelNumber: '',
-                serialNumber: '',
-                firmwareVersion: '',
-                supportedModes: ''
+                form: {
+                    manufacturer: '',
+                    serialNumber: '',
+                    firmwareVersion: '',
+                    supportedModes: '',
+                    systemVersion: '',
+                    boardName: '',
+                },
+                dialogFormVisible: false,
+                formLabelWidth: "200px"
             }
         },
         methods:{
@@ -112,7 +128,7 @@
 
                         this.deviceTableData = res;
                         this.dataCount = this.deviceTableData.length;
-                        this.deviceList = this.deviceTableData.slice(0,this.limit)
+                        this.deviceList = this.deviceTableData.slice(0, this.limit)
                         this.isshow = this.dataCount > this.limit;
                         // console.log(res);
                     })
@@ -121,15 +137,17 @@
 
             handleCurrentChange(currentPage){
                 this.currentPage = currentPage;
-                this.deviceList = this.deviceTableData.slice((currentPage-1)*this.limit,currentPage*this.limit)
+                this.deviceList = this.deviceTableData.slice((currentPage-1)*this.limit, currentPage*this.limit)
             },
-            handleExpandChange(val){
-                let AgentId = val.endpoint;
+            getDeviceDetails(agentId){
+                Object.assign(this.$data.form, this.$options.data().form)
+                this.dialogFormVisible = true;
                 for(let key in deviceDetail){
-                    getDeviceDetailApi(AgentId, deviceDetail[key]).then((data) => {
+                    getDeviceDetailApi(agentId, deviceDetail[key]).then((data) => {
                         handleResponse(data, (res) => {
-                            this[key] = res.content.value;
+                            this.form[key] = res.content.value;
                         })
+                       
                     })
                 }
                 
@@ -155,17 +173,5 @@
 </script>
 <style lang='scss'>
 @import "@/assets/css/colors.scss";
-    #deviceTable{
-        .table-expand{
-            font-size: 0;
-            .el-form-item{
-                margin-right: 0;
-                margin-bottom: 0;
-                width: 50%;
-                label {
-                    color: $darkgray-color;
-                }
-            }
-        } 
-    } 
+   
 </style>

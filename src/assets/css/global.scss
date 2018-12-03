@@ -345,7 +345,7 @@ background-color: SaddleBrown;
 .c-gray {
     color: $gray-color!important;;
 }
-.c-primaty {
+.c-primary {
   color: $primary-color!important;;
 }
 .c-danger {
@@ -363,7 +363,9 @@ background-color: SaddleBrown;
 .c-warn{
     color: $warn-color;
 }
-
+.c-darkgray{
+    color: $darkgray-color;
+}
 .fz-18 {
     font-size: 18px
 }

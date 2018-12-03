@@ -1,7 +1,7 @@
 {
-  "name": "aimlink",
+  "name": "m2mlink",
   "version": "1.0.0",
-  "description": "android aimlink",
+  "description": "android m2mlink",
   "author": "gangqiang",
   "private": true,
   "scripts": {

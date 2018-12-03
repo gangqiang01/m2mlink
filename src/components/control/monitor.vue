@@ -218,12 +218,8 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
             },
 
             getDeviceOption(msg){
+                Object.assign(this.$data, this.$options.data())
                 this.selectedAgentId = msg;
-                this.cpudata = new Array(7);
-                this.memorydata = new Array(7);
-                this.memoryNowPercentage = 0;
-                this.cpuNowPercentage = 0,
-                this.fullTimeout = "10 s"
                 this.getTimeout()
                 this.startDeviceMemoryMonitor();
             },
