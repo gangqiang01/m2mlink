@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import {startIntermittentApi} from '../restfulapi/monitorApi'
+    import {startIntermittentApi, stopIntermittentApi} from '../restfulapi/monitorApi'
     import selectGroup from '../../common/select-group'
     import {deviceMonitor} from '@/assets/js/deviceProperty'
     import Chart from 'chart.js'
@@ -52,8 +52,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 memorydata: new Array(7),
                 memoryNowPercentage: 0,
                 cpuNowPercentage: 0,
-                NowMemoryvalue: 0,
-                fullTimeout: ""
+                fullTimeout: "10 s"
             }
         },
         components:{
@@ -64,9 +63,12 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 let options=[];
                 let date = new Date();
                 let time = "";
-                let Hours =  date.getHours();if(Hours<10) Hours = "0"+Hours;
-                let Min = date.getMinutes();if(Min<10) Min = "0"+Min;
-                let Sec =  date.getSeconds();if(Sec<10) Sec = "0"+Sec;
+                let Hours =  date.getHours();
+                if(Hours<10) Hours = "0"+Hours;
+                let Min = date.getMinutes();
+                if(Min<10) Min = "0"+Min;
+                let Sec =  date.getSeconds();
+                if(Sec<10) Sec = "0"+Sec;
                 for (let i=0;i<=6;i++){
                     time =  Hours+":"+Min+":"+Sec;
                     options.unshift(time)
@@ -96,17 +98,38 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                                     singleHandleMsg("NOTIFICATION", (type, data) => {
                                         if(data){
                                             let msgData = JSON.parse(data);
+                                            console.log(this.selectedAgentId)
                                             if(msgData.res === deviceMonitor.memoryFree && msgData.ep === this.selectedAgentId){
                                                 nowMemoryvalue = msgData.val.value
                                                 this.memoryNowPercentage = parseInt(nowMemoryvalue/toMemoryValue*100);
                                                 this.memorydata.push(this.memoryNowPercentage);
                                                 this.memorydata.shift();
                                                 // this.drawCpuChart()
-                                                this.drawMemoryChart()
+                                                try{
+                                                    this.drawMemoryChart()
+                                                }catch(err){
+                                                    console.log("monitor.vue:"+err)
+                                                }
                                             }
                                         }
                                     }, false);
+                                    getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
+                                        handleResponse(data, (res) => {
+                                            nowMemoryvalue = res.content.value;
+                                            this.memoryNowPercentage = parseInt(nowMemoryvalue/toMemoryValue*100);
+                                            this.memorydata.push(this.memoryNowPercentage);
+                                            this.memorydata.shift();
+                                            // this.drawCpuChart()
+                                            try{
+                                                this.drawMemoryChart()
+                                            }catch(err){
+                                                console.log("monitor.vue:" +err)
+                                            }
+                                            
+                                        })
+                                    })
                                 })
+
                             })
                             
                         }
@@ -196,6 +219,11 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
 
             getDeviceOption(msg){
                 this.selectedAgentId = msg;
+                this.cpudata = new Array(7);
+                this.memorydata = new Array(7);
+                this.memoryNowPercentage = 0;
+                this.cpuNowPercentage = 0,
+                this.fullTimeout = "10 s"
                 this.getTimeout()
                 this.startDeviceMemoryMonitor();
             },
@@ -211,6 +239,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                     handleResponse(data, (res) => {
                         if(res.status == "CHANGED"){
                             this.fullTimeout = setSensorVal;
+                            this.startDeviceMemoryMonitor()
                         }
                     })
                     
@@ -226,25 +255,41 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                     })
                     
                 })
+            },
+            stopDeviceMemoryMonitor(){
+                stopIntermittentApi(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
+                    handleResponse(data, (res) => {
+                    })
+                })
             }
         },
 
         mounted(){
-            this.drawCpuChart(this.cpudata)
-            this.drawMemoryChart(this.memorydata);
+            try{
+                this.drawCpuChart()
+                this.drawMemoryChart();
+            }catch(err){
+                console.log("monitor.vue:" +err)
+            }
+            
             
         },
 
         computed:{
             timeout: {
                 get(){
-                    return this.fullTimeout.split(" ")[0];
+                    return parseInt(this.fullTimeout.split(" ")[0]);
                 },
                 set(val){
-                    this.timeout = val;
+                    this.timeout = parseInt(val);
                 }
             }
 
+        },
+
+        destroyed(){
+            this.stopDeviceMemoryMonitor();
+            this.selectedAgentId = "";
         }
     }
 </script>

@@ -70,12 +70,25 @@
             getAllDevices(){
                 getDeviceApi().then((data) => {
                     handleResponse(data, (res) => {
-                        this.deviceOptions = res;
+                        if(Object.prototype.toString.call(res) === "[object Array]"){
+                            this.deviceOptions = res;
+                            let defaultDeviceAgent = localStorage.getItem("selectDeviceAgent");
+                            res.forEach((val) => {
+                                if(val.endpoint === defaultDeviceAgent){
+                                    this.devValue = defaultDeviceAgent;
+                                    this.deviceChange(this.devValue);
+                                }
+                            })
+                        }else{
+                            throw new Error("data is not array")
+                        }
+                       
                     })
                 })
             },
 
             deviceChange(val){
+                localStorage.setItem("selectDeviceAgent", val);
                 this.$emit("select-device",val);
             },
 

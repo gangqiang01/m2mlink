@@ -16,7 +16,19 @@ let startIntermittentApi = function(agentId, sensorId){
     })
 }
 
+let stopIntermittentApi = function(agentId, sensorId){
+    return new Promise((resolve, reject) => {
+        let url = "/api/api/clients/"+ agentId+ sensorId+"/observe"
+        apiDelete(url).then((data) => {
+            resolve(data)
+        }).catch((error) => {
+            resolve(err.response)
+        })
+    })
+}
+
 
 export {
     startIntermittentApi,
+    stopIntermittentApi
 }

@@ -14,7 +14,9 @@
                                     v-for="item in appOptions"
                                     :key="item.packageName"
                                     :label="item.appName"
-                                    :value="item.packageName">
+                                    :value="item.packageName"
+                                    v-if="disableAppArray.indexOf(item.packageName)<0"
+                                    >
                                 </el-option>    
                             </el-select>
                             <el-button 
@@ -25,7 +27,7 @@
                                 Launch
                             </el-button>
                         </el-form-item>
-                        <el-form-item label="Stop App:">
+                        <!-- <el-form-item label="Stop App:">
                             <el-select v-model="stopApp" placeholder="Please select app" class="w-300" size="small">
                                 <el-option
                                     v-for="item in appOptions"
@@ -41,7 +43,7 @@
                             class="m-l-10">
                                 Stop
                             </el-button>
-                        </el-form-item>
+                        </el-form-item> -->
                         <el-form-item label="Enable App:">
                             <el-select v-model="enableApp" placeholder="Please select app" class="w-300" size="small">
                                 <el-option
@@ -202,18 +204,21 @@
                             this.appOptions[0].packageName,
                             this.appOptions[0].packageName,
                         ]
-                        this.appOptions.forEach((val) => {
-                            let removeAppObj = {
-                                type: 'removeApp',
-                                appname: val.appName,
-                                package: val.packageName,
-                                versioncode: val.versionCode,
-                                version: val.versionName
-                            };
-                            AppManagementInfoArray.push(removeAppObj);
-                            deviceAppArray.push(removeAppObj);
-                        })
-                        
+                        if(Object.prototype.toString.call(this.appOptions) === "[object Array]"){
+                            this.appOptions.forEach((val) => {
+                                    let removeAppObj = {
+                                        type: 'removeApp',
+                                        appname: val.appName,
+                                        package: val.packageName,
+                                        versioncode: val.versionCode,
+                                        version: val.versionName
+                                    };
+                                    AppManagementInfoArray.push(removeAppObj);
+                                    deviceAppArray.push(removeAppObj);
+                            })
+                        }else{
+                            throw new Error("data is not array")
+                        }
                         this.getRepoApps(AppManagementInfoArray, deviceAppArray);  
                           
                     })   
@@ -221,14 +226,26 @@
             },
             // Deletes an object of a particular value in array
             removeObjInArray(originData, rem_apk_val){
-                originData.forEach((obj_val, index) => {
-                    if(obj_val.package === rem_apk_val){
-                        originData.splice(index ,1)
-                    }
-                })
+                if(Object.prototype.toString.call(originData) === "[object Array]"){
+                    originData.forEach((obj_val, index) => {
+                        if(obj_val.package === rem_apk_val){
+                            originData.splice(index ,1)
+                        }
+                    })
+                }else{
+                    throw new Error("data is not array")
+                }
+                
             },
             //get repo apps
             getRepoApps(AppManagementInfoArray, deviceAppArray){
+                if(
+                    Object.prototype.toString.call(AppManagementInfoArray) != "[object Array]" ||
+                    Object.prototype.toString.call(deviceAppArray) != "[object Array]"
+                ){
+                    throw new Error("parameter is not array")
+                    return;
+                }
                 let token;
                 let InstallAppManagementInfo = {};
                 let UpgradeAppManagementInfo = {};
@@ -243,53 +260,58 @@
                             let installappopt = "";
                             let upgradeappopt = "";
                             let lastVersionCode = [];
-                            res.data.forEach((val) => {
-                                let version = val.versionName != null ? val.versionName:"";
-                                InstallAppManagementInfo = {
-                                    type : "installApp", 
-                                    appname: val.filename, 
-                                    package: val.pkgname, 
-                                    versioncode: val.versioncode, 
-                                    version: val.versionname};
-                                AppManagementInfoArray.push(InstallAppManagementInfo);
-                                deviceAppArray.forEach((deviceapp_val) => {
-                                    if(val.pkgname === deviceapp_val.package){
-                                        if (val.versioncode > deviceapp_val.versioncode){
-                                            // select latest version apk
-                                            if(lastVersionCode[val.pkgname] === undefined || val.versioncode > lastVersionCode[val.pkgname]){
-                                                lastVersionCode[val.pkgname] = val.versioncode;
-                                                // pop latest app info
+                            if(Object.prototype.toString.call(res.data) === "[object Array]"){
+                                res.data.forEach((val) => {
+                                    let version = val.versionName != null ? val.versionName:"";
+                                    InstallAppManagementInfo = {
+                                        type : "installApp", 
+                                        appname: val.filename, 
+                                        package: val.pkgname, 
+                                        versioncode: val.versioncode, 
+                                        version: val.versionname};
+                                    AppManagementInfoArray.push(InstallAppManagementInfo);
+                         
+                                    deviceAppArray.forEach((deviceapp_val) => {
+                                        if(val.pkgname === deviceapp_val.package){
+                                            if (val.versioncode > deviceapp_val.versioncode){
+                                                // select latest version apk
+                                                if(lastVersionCode[val.pkgname] === undefined || val.versioncode > lastVersionCode[val.pkgname]){
+                                                    lastVersionCode[val.pkgname] = val.versioncode;
+                                                    // pop latest app info
+                                                    AppManagementInfoArray.pop(); 
+                                                    // remove install app push update app 
+                                                    this.removeObjInArray(AppManagementInfoArray, val.pkgname);
+                                                    UpgradeAppManagementInfo = {
+                                                        type : "upgradeApp", 
+                                                        appname: deviceapp_val.appname,
+                                                        upgradeapk : val.filename, 
+                                                        package: val.pkgname, 
+                                                        versioncode: val.versioncode,
+                                                        latestversion: val.versionname, 
+                                                        version: deviceapp_val.version};
+                                                    AppManagementInfoArray.push(UpgradeAppManagementInfo);     
+                                                }
+                                            }else{
                                                 AppManagementInfoArray.pop(); 
-                                                // remove install app push update app 
-                                                this.removeObjInArray(AppManagementInfoArray, val.pkgname);
-                                                UpgradeAppManagementInfo = {
-                                                    type : "upgradeApp", 
-                                                    appname: deviceapp_val.appname,
-                                                    upgradeapk : val.filename, 
-                                                    package: val.pkgname, 
-                                                    versioncode: val.versioncode,
-                                                    latestversion: val.versionname, 
-                                                    version: deviceapp_val.version};
-                                                AppManagementInfoArray.push(UpgradeAppManagementInfo);     
                                             }
-                                        }else{
-                                            AppManagementInfoArray.pop(); 
+                                            
                                         }
-                                        
-                                    }
+                                    })
                                 })
-                            })
+                            }else{
+                                throw new Error("data is not array")
+                            }
+                            
                         }
                         this.appTableData = AppManagementInfoArray;
                     })
-        
                     
                 })
             },
 	
 
             setAppSensor(cid, setSensorVal){
-                if(cid === "removeapp" || cid === "disableApp" || cid === "installapp" || cid === "upgradeapp"){
+                if(cid === "removeapp" || cid === "disableApp" || cid === "installapp" || cid === "upgradeapp" || cid === "stopApp"){
                     _g.swalWarnDo(cid).then((willfunc) => {
                         if (willfunc) {
                             _g.openGlobalLoading();
@@ -323,13 +345,13 @@
 
             appAction(cid, selectedAppData){
                 let setsensorval;
-                if(cid === "installapp"){
+                if(cid === "installApp"){
                     var appname= selectedAppData.appname;
                     var pkgname= selectedAppData.package;
                     var versionname = selectedAppData.version;
                     var reponame = "95cbbb6613127668fdd633b2cc006d47";
                     setsensorval = repoAppBaseDownloadUrl + "/"+ reponame +"/" + pkgname +　"/" + versionname + "/" + appname;
-                }else if(cid === "upgradeapp"){
+                }else if(cid === "upgradeApp"){
                     var appname= selectedAppData.upgradeapk;
                     var pkgname= selectedAppData.package;
                     var versionname = selectedAppData.latestversion;
@@ -341,14 +363,16 @@
                 this.setAppSensor(cid, setsensorval);
             },
 
-             getDeviceOption(msg){
+             getDeviceOption(msg){ 
+                this.appTableData = [];
+                this.appOptions = [];
+                this.startApp = '';
+                this.stopApp = '';
+                this.enableApp = '';
+                this.disableApp = '';
                 this.selectedAgentId = msg;
                 this.getSensorStatus();
             },
-        },
-
-        mounted(){
-
         },
 
     }

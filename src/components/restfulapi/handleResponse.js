@@ -4,6 +4,7 @@ let handleResponse = function(res, cb, errcb){
     _g.closeGlobalLoading();
     if(res === undefined){
         throw new Error("data is undefined")
+        return;
     }
     if(res.status == 200){
         cb(res.data)

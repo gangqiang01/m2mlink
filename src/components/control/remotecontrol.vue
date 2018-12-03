@@ -142,7 +142,6 @@
                 homeKey: false,
                 backKey: false,
                 selectedAgentId:'',
-                selectedDeviceId:'',
             }
         },
         components:{
@@ -153,8 +152,9 @@
                 for(let sensor_key in androidControl){
                     getDeviceStatus(this.selectedAgentId, androidControl[sensor_key]).then((data) => {
                         handleResponse(data, (res) => {
-                            if(res == undefined){
+                            if(res.content === undefined || res === undefined){
                                 throw new Error('responsed data is null')
+                                return;
                             }
                             let status = res.content.value;
                             if(status === "0" || status === "1"){
@@ -219,6 +219,12 @@
 
             getDeviceOption(msg){
                 this.selectedAgentId = msg;
+                this.wifi = false;
+                this.bluetooth = false;
+                this.gps = false;
+                this.lockscreen = false;
+                this.homeKey = false;
+                this.backKey = false;
                 this.getSensorStatus();
             }
         },

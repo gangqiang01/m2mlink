@@ -15,7 +15,7 @@ let getDeviceStatus = function(agentId, sensorId){
 let setDeviceStatus = function(agentId, sensorId, val){
     return new Promise((resolve, reject) => {
         let url = "/api/api/clients/"+ agentId+ sensorId; 
-        let resourceId = sensorId.substring(sensorId.lastIndexOf("\/")+1, sensorId.length);
+        let resourceId = parseInt(sensorId.substring(sensorId.lastIndexOf("\/")+1, sensorId.length));
         var obj = {
             id: resourceId,
             value: val
