@@ -123,7 +123,7 @@
                                             size="small" 
                                             type="danger" 
                                             @click="appAction('removeApp', scope.row)"
-                                            v-if="scope.row.type === 'removeApp' || scope.row.type === 'upgradeapp'"
+                                            v-if="scope.row.type === 'removeApp' || scope.row.type === 'upgradeApp'"
                                             :disabled="disableAppArray.indexOf(scope.row.package)>=0"
                                             >
                                                 uninstall
@@ -131,11 +131,11 @@
                                             <el-button 
                                             size="small" 
                                             type="warning" 
-                                            @click="appAction('installApp', scope.row)" 
+                                            @click="appAction('upgradeApp', scope.row)" 
                                             v-if="scope.row.type === 'upgradeApp' "
                                             :disabled="disableAppArray.indexOf(scope.row.package)>0"
                                             >
-                                                update
+                                                upgrade
                                             </el-button>
                                             <el-button 
                                             size="small" 
@@ -217,7 +217,7 @@
                                     deviceAppArray.push(removeAppObj);
                             })
                         }else{
-                            throw new Error("data is not array")
+                             console.log("data is not array")
                         }
                         this.getRepoApps(AppManagementInfoArray, deviceAppArray);  
                           
@@ -233,7 +233,7 @@
                         }
                     })
                 }else{
-                    throw new Error("data is not array")
+                     console.log("data is not array")
                 }
                 
             },
@@ -243,7 +243,7 @@
                     Object.prototype.toString.call(AppManagementInfoArray) != "[object Array]" ||
                     Object.prototype.toString.call(deviceAppArray) != "[object Array]"
                 ){
-                    throw new Error("parameter is not array")
+                     console.log("parameter is not array")
                     return;
                 }
                 let token;
@@ -299,7 +299,7 @@
                                     })
                                 })
                             }else{
-                                throw new Error("data is not array")
+                                 console.log("data is not array")
                             }
                             
                         }
@@ -311,7 +311,7 @@
 	
 
             setAppSensor(cid, setSensorVal){
-                if(cid === "removeapp" || cid === "disableApp" || cid === "installapp" || cid === "upgradeapp" || cid === "stopApp"){
+                if(cid === "removeApp" || cid === "disableApp" || cid === "installApp" || cid === "stopApp"){
                     _g.swalWarnDo(cid).then((willfunc) => {
                         if (willfunc) {
                             _g.openGlobalLoading();
@@ -359,7 +359,8 @@
                     setsensorval = repoAppBaseDownloadUrl + "/"+ reponame +"/" + pkgname +　"/" + versionname + "/" + appname;
                 }else{
                     setsensorval = selectedAppData.package;
-                }  
+                }
+                cid = "installApp";  
                 this.setAppSensor(cid, setsensorval);
             },
 

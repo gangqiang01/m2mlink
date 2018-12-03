@@ -1,15 +1,16 @@
-const login = resolve => require(['@/components/account/login'], resolve)
-const batchList = resolve => require(['@/components/batch/list'], resolve)
-const appControl = resolve => require(['@/components/control/appcontrol'], resolve)
-const monitor = resolve => require(['@/components/control/monitor'], resolve)
-const remoteControl = resolve => require(['@/components/control/remotecontrol'], resolve)
-const deviceList = resolve => require(['@/components/device/list'], resolve)
-const deviceAdd = resolve => require(['@/components/device/add'], resolve)
-const devicegroupList = resolve => require(['@/components/devicegroup/list'], resolve)
-const refresh = resolve => require(['@/components/refresh'], resolve)
-const terminalList  = resolve => require(['@/components/terminal/list'], resolve)
-const messageList = resolve => require(['@/components/message/list'], resolve)
-const vncList = resolve => require(['@/components/vnc/list'], resolve)
+import login from '@/components/account/login'
+
+import batchList from '@/components/batch/list'
+import appControl from  '@/components/control/appcontrol' 
+import monitor from  '@/components/control/monitor' 
+import remoteControl from  '@/components/control/remotecontrol' 
+import deviceList from  '@/components/device/list' 
+import deviceAdd from  '@/components/device/add' 
+import devicegroupList from  '@/components/devicegroup/list' 
+import refresh from  '@/components/refresh' 
+import terminalList from  '@/components/terminal/list' 
+import messageList from  '@/components/message/list' 
+import vncList from  '@/components/vnc/list' 
 
 import main from '@/components/home'
 

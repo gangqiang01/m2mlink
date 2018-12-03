@@ -41,7 +41,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
                 };
                 })
             }else{
-                throw new Error("data type is error")
+                console.log("data type is error")
             }
             apiPut("rmm/v1/devices", dddata).then((data) => {
                 resolve(data);

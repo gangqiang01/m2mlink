@@ -3,7 +3,7 @@
 let handleResponse = function(res, cb, errcb){
     _g.closeGlobalLoading();
     if(res === undefined){
-        throw new Error("data is undefined")
+        console.log("data is undefined")
         return;
     }
     if(res.status == 200){

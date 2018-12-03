@@ -230,7 +230,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
 
             setTimeout(setSensorVal){
                 if(this.selectedAgentId == ''){
-                    swal("","Please select your device","info").then(() => {
+                    _g.swalInfoDo("Please select your device").then(() => {
                         this[cid] = !this[cid];
                     })
                     return;

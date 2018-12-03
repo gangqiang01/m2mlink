@@ -80,7 +80,7 @@
                                 }
                             })
                         }else{
-                            throw new Error("data is not array")
+                            console.log("data is not array")
                         }
                        
                     })
@@ -88,8 +88,8 @@
             },
 
             deviceChange(val){
-                localStorage.setItem("selectDeviceAgent", val);
                 this.$emit("select-device",val);
+                localStorage.setItem("selectDeviceAgent", val);
             },
 
         },

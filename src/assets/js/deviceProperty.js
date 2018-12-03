@@ -82,11 +82,11 @@ const allProperty = {
         getAllAppInfo: '/40004/0/27301',
         enableApp: '/40004/0/27302',
         disableApp: '/40004/0/27303',
-        installApp: '/40004/0/27304',
+        installLocalApp: '/40004/0/27304',
         removeApp: '/40004/0/27305',
         startApp: '/40004/0/27306',
         downloadSomeFile: '/40004/0/27307',
-        installSomeApk: '/40004/0/27308'
+        installApp: '/40004/0/27308'
     },
 
     androidSecurityControl: {
@@ -123,11 +123,11 @@ const appControl = {
     getAllAppInfo: '/40004/0/27301',
     enableApp: '/40004/0/27302',
     disableApp: '/40004/0/27303',
-    installApp: '/40004/0/27304',
+    installLocalApp: '/40004/0/27304',
     removeApp: '/40004/0/27305',
     startApp: '/40004/0/27306',
     downloadSomeFile: '/40004/0/27307',
-    installSomeApk: '/40004/0/27308',
+    installApp: '/40004/0/27308'
 }
 
 const actionDevice= {

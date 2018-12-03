@@ -153,7 +153,7 @@
                     getDeviceStatus(this.selectedAgentId, androidControl[sensor_key]).then((data) => {
                         handleResponse(data, (res) => {
                             if(res.content === undefined || res === undefined){
-                                throw new Error('responsed data is null')
+                                 console.log('responsed data is null')
                                 return;
                             }
                             let status = res.content.value;
@@ -164,7 +164,7 @@
                             }else if(status === "true" || status === "false"){
                                 this[sensor_key] = status === "true"? true: false
                             }else{
-                                throw new Error('the value type responsed is error')
+                                 console.log('the value type responsed is error')
                             }
                         })
                     })
