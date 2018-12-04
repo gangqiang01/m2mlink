@@ -1,2 +1,0 @@
-webpackJsonp([4],{BnN7:function(e,r,n){"use strict";Object.defineProperty(r,"__esModule",{value:!0});var t={name:"refresh",created:function(){this.$route.query.name?router.replace({name:this.$route.query.name}):console.log("refresh fail")}},u={render:function(){var e=this.$createElement;return(this._self._c||e)("div")},staticRenderFns:[]},l=n("C7Lr")(t,u,!1,null,null,null);r.default=l.exports}});
-//# sourceMappingURL=4.2d60b3ac44021dbe9d30.js.map

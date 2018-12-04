@@ -22,6 +22,7 @@ const allProperty = {
         softwareVersion: '/3/0/19',
         batteryStatus: '/3/0/20',
         memoryTotal: '/3/0/21',  
+        CPUShare: '/40006/0/27500'
     },
     
     firmwareUpdate: {
@@ -90,9 +91,9 @@ const allProperty = {
     },
 
     androidSecurityControl: {
-        lockScreen: '/40005/0/274000',
-        adb: '/40005/0/274001',
-    }
+        lockScreen: '/40005/0/27400',
+        adb: '/40005/0/27401',
+    }, 
 }
 
 const deviceDetail = {
@@ -107,7 +108,8 @@ const deviceDetail = {
 const deviceMonitor = {
     memoryFree: '/3/0/10',
     memoryTotal: '/3/0/21',
-    globleTimeout: '/1/0/3'
+    globleTimeout: '/1/0/3',
+    cpuShare: '/40006/0/27500'
     
 }
 
@@ -116,7 +118,9 @@ const androidControl = {
     bluetooth: '/40001/0/27001',
     homeKey: '/40003/0/27200',
     backKey: '/40003/0/27201',
-    lockScreen: '/40005/0/274000',
+    lockScreen: '/40005/0/27400',
+    adb: '/40005/0/27401',
+    reboot: '/3/0/4',
 }
 
 const appControl = {

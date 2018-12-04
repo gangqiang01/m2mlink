@@ -80,7 +80,7 @@
                                 }
                             })
                         }else{
-                            console.log("data is not array")
+                            console.error("data is not array")
                         }
                        
                     })

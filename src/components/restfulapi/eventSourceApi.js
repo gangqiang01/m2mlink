@@ -10,7 +10,7 @@ let eventSourceConn = function(){
     }
     eventSource.onerror = function(){
         eventSource = null;
-        console.log("eventSource Error")
+        console.error("eventSource Error")
     }
 }
 
@@ -29,7 +29,7 @@ let singleEventSourceConn = function(agentId){
         let singleServerUrl = ESServerUrl+"?ep="+agentId;
         singleEventSource = new EventSource(singleServerUrl);  
     }else{
-        console.log("paramater is undefined")
+        console.error("paramater is undefined")
     }
 
     singleEventSource.onopen=function(){
@@ -37,7 +37,7 @@ let singleEventSourceConn = function(agentId){
     }
     singleEventSource.onerror = function(){
         eventSource = null;
-        console.log("eventSource Error")
+        console.error("eventSource Error")
     }
 }
 

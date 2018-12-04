@@ -217,7 +217,7 @@
                                     deviceAppArray.push(removeAppObj);
                             })
                         }else{
-                             console.log("data is not array")
+                             console.error("data is not array")
                         }
                         this.getRepoApps(AppManagementInfoArray, deviceAppArray);  
                           
@@ -233,7 +233,7 @@
                         }
                     })
                 }else{
-                     console.log("data is not array")
+                     console.error("data is not array")
                 }
                 
             },
@@ -243,7 +243,7 @@
                     Object.prototype.toString.call(AppManagementInfoArray) != "[object Array]" ||
                     Object.prototype.toString.call(deviceAppArray) != "[object Array]"
                 ){
-                     console.log("parameter is not array")
+                    console.error("parameter is not array")
                     return;
                 }
                 let token;
@@ -299,7 +299,7 @@
                                     })
                                 })
                             }else{
-                                 console.log("data is not array")
+                                 console.error("data is not array")
                             }
                             
                         }

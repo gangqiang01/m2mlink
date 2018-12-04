@@ -6,7 +6,7 @@ let loginApi = function(username, password){
         let data = {}
         data.username = username
         data.password = password
-        apiPost('/api/login', data).then((data) => {
+        apiPost('/login', data).then((data) => {
             resolve(data)
         }).catch((error) => {
             resolve(err.response)

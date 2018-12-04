@@ -48,11 +48,14 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
         data(){
             return {
                 selectedAgentId:'',
-                cpudata: new Array(7),
-                memorydata: new Array(7),
+                cpuData: new Array(7),
+                memoryData: new Array(7),
                 memoryNowPercentage: 0,
                 cpuNowPercentage: 0,
-                fullTimeout: "10 s"
+                fullTimeout: "10 s",
+                cupChart: {},
+                memoryChart: {},
+                toMemoryValue: 0
             }
         },
         components:{
@@ -86,46 +89,22 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 return options;
             },
             startDeviceMemoryMonitor(){
-                let nowMemoryvalue, toMemoryValue;
                 startIntermittentApi(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
                     handleResponse(data, (res) =>{
                         if(res.status === "CONTENT"){
                             getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryTotal).then((data) => {
                                 handleResponse(data, (res) => {
-                                    // toMemoryValue = res.content.value
-                                    toMemoryValue = 4096000;
-                                    singleEventSourceConn(this.selectedAgentId);
-                                    singleHandleMsg("NOTIFICATION", (type, data) => {
-                                        if(data){
-                                            let msgData = JSON.parse(data);
-                                            console.log(this.selectedAgentId)
-                                            if(msgData.res === deviceMonitor.memoryFree && msgData.ep === this.selectedAgentId){
-                                                nowMemoryvalue = msgData.val.value
-                                                this.memoryNowPercentage = parseInt(nowMemoryvalue/toMemoryValue*100);
-                                                this.memorydata.push(this.memoryNowPercentage);
-                                                this.memorydata.shift();
-                                                // this.drawCpuChart()
-                                                try{
-                                                    this.drawMemoryChart()
-                                                }catch(err){
-                                                    console.log("monitor.vue:"+err)
-                                                }
-                                            }
-                                        }
-                                    }, false);
+                                    this.toMemoryValue = res.content.value
+                                    this.listenEventSource()
                                     getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
                                         handleResponse(data, (res) => {
-                                            nowMemoryvalue = res.content.value;
-                                            this.memoryNowPercentage = parseInt(nowMemoryvalue/toMemoryValue*100);
-                                            this.memorydata.push(this.memoryNowPercentage);
-                                            this.memorydata.shift();
+                                            let nowMemoryvalue = res.content.value;
+                                            this.memoryNowPercentage = parseInt(nowMemoryvalue/this.toMemoryValue*100);
+                                            this.memoryData.push(this.memoryNowPercentage);
+                                            this.memoryData.shift();
                                             // this.drawCpuChart()
-                                            try{
-                                                this.drawMemoryChart()
-                                            }catch(err){
-                                                console.log("monitor.vue:" +err)
-                                            }
-                                            
+                                            this.drawMemoryChart()
+                                        
                                         })
                                     })
                                 })
@@ -139,15 +118,63 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 })
             },
 
+            startDeviceCpuMonitor(){
+                startIntermittentApi(this.selectedAgentId, deviceMonitor.cpuShare).then((data) => {
+                    handleResponse(data, (res) =>{
+                        if(res.status === "CONTENT"){
+                            this.listenEventSource()
+                            getDeviceStatus(this.selectedAgentId, deviceMonitor.cpuShare).then((data) => {
+                                handleResponse(data, (res) => {
+                                    this.cpuNowPercentage = res.content.value;
+                                    this.cpuData.push(this.cpuNowPercentage);
+                                    this.cpuData.shift();
+                                    // this.drawCpuChart()
+                                        this.drawCpuChart()
+                                })
+                            })
+                            
+                        }
+                        
+                    })
+                    
+                })
+            },
+
+            listenEventSource(){
+                singleEventSourceConn(this.selectedAgentId);
+                singleHandleMsg("NOTIFICATION", (type, data) => {
+                    if(data){
+                        let msgData = JSON.parse(data);
+                        if(msgData.ep === this.selectedAgentId){
+                            if(msgData.res === deviceMonitor.cpuShare){
+                                this.cpuNowPercentage = msgData.val.value
+                                this.cpuData.push(this.cpuNowPercentage);
+                                this.cpuData.shift();
+                                this.drawCpuChart()
+                                
+                            }else if(msgData.res === deviceMonitor.memoryFree){
+                                let nowMemoryvalue = msgData.val.value
+                                this.memoryNowPercentage = parseInt(nowMemoryvalue/this.toMemoryValue*100);
+                                this.memoryData.push(this.memoryNowPercentage);
+                                this.memoryData.shift();
+                                this.drawMemoryChart()
+
+                            }
+                        }
+                        
+                    }
+                }, false);
+            },
+
             drawCpuChart(){
                 let labelOptions = this.getTimeOptions();
                 let ctx = document.getElementById("cpuchart").getContext('2d');
-                let chart = new Chart(ctx, {
+                this.cupChart = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
                             label: 'CPU Usage('+this.cpuNowPercentage+'%)',
-                            data: this.cpudata,
+                            data: this.cpuData,
                             backgroundColor: "transparent",
                             borderColor : "rgba(51,122,183,0.5)",
                         }],
@@ -181,12 +208,12 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
 
                 let labelOptions = this.getTimeOptions();
                 let ctx = document.getElementById("memorychart").getContext('2d');
-                let chart = new Chart(ctx, {
+                this.memoryChart = new Chart(ctx, {
                     type: 'line',
                     data: {
                         datasets: [{
                             label: 'Memory Usage('+ this.memoryNowPercentage+'%)',
-                            data: this.memorydata,
+                            data: this.memoryData,
                             backgroundColor: "transparent",
                             borderColor : "rgba(45,213,179,0.5)",
                         }],
@@ -221,7 +248,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 Object.assign(this.$data, this.$options.data())
                 this.selectedAgentId = msg;
                 this.getTimeout()
-                this.startDeviceMemoryMonitor();
+                this.startDeviceMonitor()
             },
 
             setTimeout(setSensorVal){
@@ -235,7 +262,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                     handleResponse(data, (res) => {
                         if(res.status == "CHANGED"){
                             this.fullTimeout = setSensorVal;
-                            this.startDeviceMemoryMonitor()
+                            this.startDeviceMonitor()
                         }
                     })
                     
@@ -252,23 +279,19 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                     
                 })
             },
-            stopDeviceMemoryMonitor(){
-                stopIntermittentApi(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
-                    handleResponse(data, (res) => {
-                    })
-                })
+            stopDeviceMonitor(){
+                stopIntermittentApi(this.selectedAgentId, deviceMonitor.memoryFree)
+                stopIntermittentApi(this.selectedAgentId, deviceMonitor.cpuShare)
+            },
+
+            startDeviceMonitor(){
+                this.startDeviceMemoryMonitor()
+                this.startDeviceCpuMonitor()
             }
         },
-
         mounted(){
-            try{
-                this.drawCpuChart()
-                this.drawMemoryChart();
-            }catch(err){
-                console.log("monitor.vue:" +err)
-            }
-            
-            
+            this.drawCpuChart()
+            this.drawMemoryChart();
         },
 
         computed:{
@@ -284,7 +307,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
         },
 
         destroyed(){
-            this.stopDeviceMemoryMonitor();
+            this.stopDeviceMonitor();
             this.selectedAgentId = "";
         }
     }

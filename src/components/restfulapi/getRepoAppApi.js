@@ -7,7 +7,7 @@ let getRepoAppsApi = function(repoUrl, appInfoUrl){
         let infoData;
         repoApiPost(repoUrl, formData).then((tokenData) =>{
             if(tokenData === undefined){
-                console.log("token is null");
+                console.error("token is null");
                 return false;
             }
             let token = tokenData.data.token;

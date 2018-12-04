@@ -40,13 +40,13 @@
                     <div class="info-box">
                         <span class="info-box-icon bg-DimGray" >
                             <i class="fa fa-map-marker info-box-icon-white"></i>
-                            <p class="info-box-icon-title">GPS</p>
+                            <p class="info-box-icon-title">adb Control</p>
                         </span>
                         <el-switch
-                        v-model="gps"
+                        v-model="adb"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
-                        @change="switchChange(gps, 'gps')"
+                        @change="switchChange(adb, 'adb')"
                         >
                         </el-switch>
                         
@@ -60,10 +60,10 @@
                             <p class="info-box-icon-title">Lock Screen</p>
                         </span>
                         <el-switch
-                        v-model="lockscreen"
+                        v-model="lockScreen"
                         active-color="#13ce66"
                         inactive-color="#ff4949"
-                        @change="switchChange(lockscreen, 'lockscreen')"
+                        @change="switchChange(lockScreen, 'lockScreen')"
                         >
                         </el-switch>
                     </div>
@@ -99,7 +99,7 @@
                     </div>
                 </el-col>
 
-                <el-col :md="8" :sm="12"  class="pd-5">
+                <!-- <el-col :md="8" :sm="12"  class="pd-5">
                     <div class="info-box">
                         <span class="info-box-icon bg-Indigo">
                             <i class="fa fa-power-off info-box-icon-white"></i>
@@ -108,7 +108,7 @@
                         <el-button type="primary" size="small" @click="powerAction('shutdown')">shutdown</el-button>
                         
                     </div>
-                </el-col>
+                </el-col> -->
                 <el-col :md="8" :sm="12" class="pd-5">
                     <div class="info-box">
                         <span class="info-box-icon bg-SteelBlue">
@@ -126,7 +126,7 @@
 </template>
 
 <script>
-    import {getDeviceStatus, setDeviceStatus} from '../restfulapi/deviceStatusApi'
+    import {getDeviceStatus, setDeviceStatus, execDeviceStatus} from '../restfulapi/deviceStatusApi'
     import selectGroup from '../../common/select-group'
     import {androidControl, actionDevice} from '@/assets/js/deviceProperty'
     import handleResponse from '../restfulapi/handleResponse'
@@ -137,8 +137,8 @@
             return {
                 wifi: false,
                 bluetooth: false,
-                gps: false,
-                lockscreen: false,
+                adb: false,
+                lockScreen: false,
                 homeKey: false,
                 backKey: false,
                 selectedAgentId:'',
@@ -153,7 +153,7 @@
                     getDeviceStatus(this.selectedAgentId, androidControl[sensor_key]).then((data) => {
                         handleResponse(data, (res) => {
                             if(res.content === undefined || res === undefined){
-                                 console.log('responsed data is null')
+                                 console.error('responsed data is null')
                                 return;
                             }
                             let status = res.content.value;
@@ -164,7 +164,7 @@
                             }else if(status === "true" || status === "false"){
                                 this[sensor_key] = status === "true"? true: false
                             }else{
-                                 console.log('the value type responsed is error')
+                                 console.error('the value type responsed is error')
                             }
                         })
                     })
@@ -205,16 +205,10 @@
                     swal("","Please select your device","info")
                     return;
                 }
-                swal({
-                    title: "Are you sure?",
-                    text: cid+" this device",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                }).then(function(willfunc){
+                _g.swalWarnDo(cid+" your device").then((willfunc) =>{
                     if (willfunc) {
                         _g.openGlobalLoading();
-                        powerActionApi(cid, this.selectedDeviceId).then((data) => {
+                        execDeviceStatus(this.selectedAgentId, setSensorId).then((data) => {
                             handleResponse(data, (res) => {
                                 if(res.status === "CHANGED"){
                                     swal("","success", "success")

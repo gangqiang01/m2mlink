@@ -27,7 +27,6 @@ let apiGet = function(url, object) {
 let apiPost = function(url, data) {
     axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
     return new Promise((resolve, reject) => {
-        console.log(data);
         axios.post(url, Qs.stringify(data), {
             headers: {
                 'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'

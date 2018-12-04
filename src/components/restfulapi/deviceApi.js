@@ -2,7 +2,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
 
     let getDeviceApi = function() {
         return new Promise((resolve, reject) => {
-            apiGet("/api/api/clients").then((data) => {
+            apiGet("/api/clients").then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);
@@ -12,7 +12,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
 
     let getDeviceDetailApi = function(agentId, sensorId){
         return new Promise((resolve, reject) => {
-            let url = "/api/api/clients/"+ agentId+ sensorId
+            let url = "/api/clients/"+ agentId+ sensorId
             apiGet(url).then((data) => {
                 resolve(data);
             }).catch((error) => {
@@ -41,7 +41,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
                 };
                 })
             }else{
-                console.log("data type is error")
+                console.error("data type is error")
             }
             apiPut("rmm/v1/devices", dddata).then((data) => {
                 resolve(data);

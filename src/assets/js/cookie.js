@@ -17,7 +17,6 @@ let getCookie = function(cname) {
 //if cookie is null then return true
 let checkCookie = function(cname) {
     let username = getCookie(cname);
-    console.log(username == "undefined")
     if (username) {
         return true;
     } else {
