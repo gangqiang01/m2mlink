@@ -95,7 +95,6 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                             getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryTotal).then((data) => {
                                 handleResponse(data, (res) => {
                                     this.toMemoryValue = res.content.value
-                                    this.listenEventSource()
                                     getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
                                         handleResponse(data, (res) => {
                                             let nowMemoryvalue = res.content.value;
@@ -107,12 +106,13 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                                         
                                         })
                                     })
+                                    this.listenEventSource()
                                 })
 
                             })
                             
                         }else{
-                            swal("", cid+" function "+res.status, 'error')
+                            swal("", "memory monitor function "+res.status, 'error')
                         }
                         
                     })
@@ -124,19 +124,18 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                 startIntermittentApi(this.selectedAgentId, deviceMonitor.cpuShare).then((data) => {
                     handleResponse(data, (res) =>{
                         if(res.status === "CONTENT"){
-                            this.listenEventSource()
                             getDeviceStatus(this.selectedAgentId, deviceMonitor.cpuShare).then((data) => {
                                 handleResponse(data, (res) => {
                                     this.cpuNowPercentage = res.content.value;
                                     this.cpuData.push(this.cpuNowPercentage);
                                     this.cpuData.shift();
                                     // this.drawCpuChart()
-                                        this.drawCpuChart()
+                                    this.drawCpuChart()
                                 })
                             })
-                            
+                            this.listenEventSource()
                         }else{
-                            swal("", cid+" function "+res.status.toLowerCase(), 'error')
+                            swal("", "cpu monitor function "+res.status.toLowerCase(), 'error')
                         }
                         
                     })

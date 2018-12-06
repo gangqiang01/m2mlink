@@ -120,9 +120,13 @@ let route = [
         path: '/main',
         name: 'main',
         component: main,
-        // beforeEnter: (to, from, next) => {
-            
-        // },
+        beforeEnter: (to, from, next) => {
+            if(cookie.getCookie("token") === ""){
+                next("/")
+            }else{
+                next()
+            }
+        },
         children: childRoute,
         redirect:'/main/device/list'    
     },

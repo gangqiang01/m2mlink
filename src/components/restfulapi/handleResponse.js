@@ -25,15 +25,6 @@ let handleError = function(res) {
             });
             
             break
-        case 403:
-            if(JSON.parse(res.responseText).Description != undefined){
-                swal("",JSON.parse(res.responseText).Description,"error")
-            }else if(JSON.parse(res.responseText).Field != undefined){
-                swal("",JSON.parse(res.responseText).Field,"error")
-            }else{
-                console.log(JSON.parse(res.responseText));
-            }
-            break
         case 400:
         default :
             console.log(res)

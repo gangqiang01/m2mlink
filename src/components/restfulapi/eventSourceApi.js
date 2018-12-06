@@ -27,6 +27,9 @@ let singleEventSourceConn = function(agentId){
     
     if(agentId != undefined){
         let singleServerUrl = ESServerUrl+"?ep="+agentId;
+        if(singleEventSource != null && singleEventSource.url === singleServerUrl){
+            return
+        }
         singleEventSource = new EventSource(singleServerUrl);  
     }else{
         console.error("paramater is undefined")

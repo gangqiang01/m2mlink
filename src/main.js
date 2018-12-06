@@ -27,7 +27,7 @@ window.moment = moment;
 
 // axios.defaults.baseURL = 'http://172.21.73.144:30010';
 // axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
-// axios.defaults.timeout = 1000 * 200;
+axios.defaults.timeout = 1000 * 20;
 // axios.defaults.crossDomain = true;
 // axios.defaults.async = true
 // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
