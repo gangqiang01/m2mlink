@@ -189,6 +189,10 @@
                     handleResponse(data, (res) =>{
                         if(res.status === "CHANGED"){
                             swal("","success", "success")
+                        }else{
+                            swal("", cid+" function "+res.status.toLowerCase(), 'error').then(() => {
+                                this[cid] = !this[cid];
+                            })
                         }
                     })
                     

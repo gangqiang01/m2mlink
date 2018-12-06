@@ -111,6 +111,8 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
 
                             })
                             
+                        }else{
+                            swal("", cid+" function "+res.status, 'error')
                         }
                         
                     })
@@ -133,6 +135,8 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                                 })
                             })
                             
+                        }else{
+                            swal("", cid+" function "+res.status.toLowerCase(), 'error')
                         }
                         
                     })

@@ -66,7 +66,7 @@
         mounted() {
             window.addEventListener('keyup', (e) => {
                 if (e.keyCode === 13) {
-                this.handleSubmit2()
+                    this.handleSubmit2()
                 }
             })
         },
