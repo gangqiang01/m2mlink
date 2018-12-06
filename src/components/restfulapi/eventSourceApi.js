@@ -1,4 +1,5 @@
-const ESServerUrl = "http://172.21.73.144:30010/event";
+import {ESServerUrl} from "../../assets/js/deviceProperty"
+
 let eventSource = null, singleEventSource = null;
 let eventSourceConn = function(){
     
@@ -27,9 +28,14 @@ let singleEventSourceConn = function(agentId){
     
     if(agentId != undefined){
         let singleServerUrl = ESServerUrl+"?ep="+agentId;
-        if(singleEventSource != null && singleEventSource.url === singleServerUrl){
-            return
+        
+        if(singleEventSource != null){
+            let preAgentId =  singleEventSource.url.split("=")[1];
+            if(preAgentId === agentId){
+                return
+            }
         }
+        
         singleEventSource = new EventSource(singleServerUrl);  
     }else{
         console.error("paramater is undefined")
