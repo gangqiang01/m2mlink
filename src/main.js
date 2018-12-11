@@ -17,6 +17,7 @@ import 'font-awesome/css/font-awesome.css'
 import './assets/css/base.scss';
 import './assets/css/global.scss';
 
+import {serverUrl} from './assets/js/deviceProperty'
 window.axios = axios;
 window.swal = swal;
 window.cookie = Cookies;
@@ -25,7 +26,8 @@ window.store = store;
 window.router = router;
 window.moment = moment;
 
-// axios.defaults.baseURL = 'http://172.21.73.144:30010';
+
+// axios.defaults.baseURL = serverUrl;
 // axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
 axios.defaults.timeout = 1000 * 20;
 // axios.defaults.crossDomain = true;

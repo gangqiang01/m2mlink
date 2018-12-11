@@ -72,13 +72,15 @@
                     handleResponse(data, (res) => {
                         if(Object.prototype.toString.call(res) === "[object Array]"){
                             this.deviceOptions = res;
-                            let defaultDeviceAgent = localStorage.getItem("selectDeviceAgent");
-                            res.forEach((val) => {
-                                if(val.endpoint === defaultDeviceAgent){
-                                    this.devValue = defaultDeviceAgent;
-                                    this.deviceChange(this.devValue);
-                                }
-                            })
+                            if(res.length > 0){
+                                let defaultDeviceAgent = localStorage.getItem("selectDeviceAgent");
+                                res.forEach((val) => {
+                                    if(val.endpoint === defaultDeviceAgent){
+                                        this.devValue = defaultDeviceAgent;
+                                        this.deviceChange(this.devValue);
+                                    }
+                                })
+                            }
                         }else{
                             console.error("data is not array")
                         }
@@ -95,6 +97,7 @@
         },
         watch:{
             onlineDeviceCount(){
+                Object.assign(this.$data, this.$options.data());
                 this.getAllDevices();
             }
         },

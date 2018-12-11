@@ -24,14 +24,22 @@ let apiGet = function(url, object) {
     })
 }
 
-let apiPost = function(url, data) {
+let apiPost = function(url, data, config) {
+    let fconfig;
     axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
-    return new Promise((resolve, reject) => {
-        axios.post(url, Qs.stringify(data), {
+    if(config == undefined){
+        fconfig = {
             headers: {
-                'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
-            }
-        }).then((response) => {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        };
+        
+    }else{
+        fconfig = config;
+        data = Qs.stringify(data)
+    }
+    return new Promise((resolve, reject) => {
+        axios.post(url, data, fconfig).then((response) => {
             resolve(response)
         }).catch((err) => {
             resolve(err.response)
@@ -71,10 +79,22 @@ let apiDelete = function(url) {
     })
 }
 
-let apiPut = function(url, obj) {
+let apiPut = function(url, data, config) {
+    let fconfig;
     axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
+    if(config == undefined){
+        fconfig = {
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        };
+        
+    }else{
+        fconfig = config;
+        data = Qs.stringify(data)
+    }
     return new Promise((resolve, reject) => {
-        axios.put(url, obj).then((response) => {
+        axios.put(url, data, fconfig).then((response) => {
             resolve(response)
         }).catch((err) => {
             resolve(err.response)

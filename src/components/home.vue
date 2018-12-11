@@ -117,7 +117,7 @@
     @import "../assets/css/colors";
     $nav-icon-color : $primary-color; 
     $header-height : 70px;
-    $aside-width : 240px;
+    $aside-width : 220px;
 
     .wrapper{
         display: -webkit-flex;

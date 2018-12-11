@@ -1,5 +1,6 @@
-import {ESServerUrl} from "../../assets/js/deviceProperty"
+import {serverUrl} from "../../assets/js/deviceProperty"
 
+let ESServerUrl = serverUrl+"/event"
 let eventSource = null, singleEventSource = null;
 let eventSourceConn = function(){
     

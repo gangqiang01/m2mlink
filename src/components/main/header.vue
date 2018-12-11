@@ -6,7 +6,7 @@
                 <i :class="[isCollapse? allowright: allowleft]"class="c-blue" aria-hidden="true"></i>
             </li> -->
             <li>
-                <img src="@/assets/imgs/logo.png">
+                <img src="@/assets/imgs/m2mlink_logo.png">
             </li>
         </ul>
         <ul class="nav-right">
@@ -123,7 +123,7 @@
             display: flex;
             li{ 
                 img{
-                    height: 17px;
+                    height: 35px;
                 }
                 i{
                     color : $primary-color;
@@ -212,7 +212,7 @@
 
             viewAll(){
                 this.markAll();
-                router.replace('/main/message/list')
+                // router.replace('/main/message/list')
             },
 
             showMsg(){

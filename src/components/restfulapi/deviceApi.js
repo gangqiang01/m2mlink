@@ -21,81 +21,27 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
         })
     }
 
-
-    
-
-    let deleteDeviceApi = function(multipleTable) {
+    let editDeviceNameApi = function(agentId, deviceName){
         return new Promise((resolve, reject) => {
-            let dddata = {};
-            dddata.devices = [];
-            if (Object.prototype.toString.call(multipleTable) == "[object Object]") {
-                dddata.devices[0] = {
-                "did": multipleTable.did,
-                "groupIds": []
-                };
-            } else if (Object.prototype.toString.call(multipleTable) === '[object Array]') {
-                multipleTable.forEach((value, i) => {
-                dddata.devices[i] = {
-                    "did": value.did,
-                    "groupIds": []
-                };
-                })
-            }else{
-                console.error("data type is error")
+            let data = {
+                endpoint: agentId,
+                devName: deviceName
             }
-            apiPut("rmm/v1/devices", dddata).then((data) => {
-                resolve(data);
-            }).catch((error) => {
-                resolve(err.response);
-            })
-        })
-    }
-
-    let getUnassignedDevicesApi = function(deviceKeyword = "") {
-        return new Promise((resolve, reject) => {
-            let devgetdata = {
-                pageSize: 1000,
-                no: 1,
-                orderType: "did",
-                like: deviceKeyword,
-                _: new Date().getTime()
+            let config = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                },
             };
-
-            _g.openGlobalLoading();
-            apiGet('rmm/v1/devices/unassigned', devgetdata).then((data) => {
+            apiPut("/api/clients", data, config).then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);
             })
         })
-
-
     }
 
-    let addDeviceApi = function(multipleTable, gid) {
-        return new Promise((resolve, reject) => {
-            let adddata = {};
-            adddata.devices = [];
-            let groupid = gid;
-
-            multipleTable.forEach((val, i) => {
-                adddata.devices[i] = {
-                    did: val.did,
-                    groupIds: [groupid + ""],
-                };
-            })
-            apiPut("rmm/v1/devices", adddata).then((data) => {
-                resolve(data);
-            }).catch((error) => {
-                resolve(err.response);
-            })
-     
-        })
-    }
 export {
     getDeviceApi,
-    deleteDeviceApi,
-    getUnassignedDevicesApi,
-    addDeviceApi,
-    getDeviceDetailApi
+    getDeviceDetailApi,
+    editDeviceNameApi
 }

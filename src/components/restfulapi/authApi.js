@@ -6,7 +6,12 @@ let loginApi = function(username, password){
         let data = {}
         data.username = username
         data.password = password
-        apiPost('/login', data).then((data) => {
+        let config = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+        };
+        apiPost('/login', data, config).then((data) => {
             resolve(data)
         }).catch((error) => {
             resolve(err.response)

@@ -99,16 +99,21 @@
                     </div>
                 </el-col>
 
-                <!-- <el-col :md="8" :sm="12"  class="pd-5">
+                <el-col :md="8" :sm="12"  class="pd-5">
                     <div class="info-box">
                         <span class="info-box-icon bg-Indigo">
-                            <i class="fa fa-power-off info-box-icon-white"></i>
-                            <p class="info-box-icon-title">shutdown</p>
+                            <i class="fa fa-thermometer-full info-box-icon-white"></i>
+                            <p class="info-box-icon-title">brightness</p>
                         </span>
-                        <el-button type="primary" size="small" @click="powerAction('shutdown')">shutdown</el-button>
-                        
+                        <el-input-number 
+                        v-model="brightness" 
+                        @change="switchChange(brightness, 'brightness')" 
+                        :min="1" :max="255"
+                        class="counter"
+                        >
+                        </el-input-number>
                     </div>
-                </el-col> -->
+                </el-col>
                 <el-col :md="8" :sm="12" class="pd-5">
                     <div class="info-box">
                         <span class="info-box-icon bg-SteelBlue">
@@ -142,6 +147,7 @@
                 homeKey: false,
                 backKey: false,
                 selectedAgentId:'',
+                brightness: 179
             }
         },
         components:{
@@ -239,6 +245,10 @@
 @import "@/assets/css/colors.scss";
 .pd-5{
     padding:5px
+}
+.counter{
+    display: inline-block;
+    width: 150px;
 }
 .info-box {
   display: block;

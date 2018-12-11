@@ -19,10 +19,10 @@
                         </div>
                     </div>
                     <div  class="text item">
-                        <el-col :md="11" :sm="11" :offset="1">
+                        <el-col :lg="11" :md="22" :offset="1">
                             <canvas id="memorychart" height="200" role="img"></canvas>
                         </el-col>
-                        <el-col :md="11" :sm="11" :offset="1">
+                        <el-col :lg="11" :md="22" :offset="1">
                             <canvas id="cpuchart" height="200" role="img"></canvas>
                         </el-col> 
                        
@@ -41,7 +41,7 @@
     import handleResponse from '../restfulapi/handleResponse'
     import {singleEventSourceConn, singleHandleMsg} from '../restfulapi/eventSourceApi'
     import {getDeviceStatus, setDeviceStatus} from '../restfulapi/deviceStatusApi'
-import { deviceDetail } from '../../assets/js/deviceProperty';
+    import { deviceDetail } from '../../assets/js/deviceProperty';
 
     export default{
         name: 'controlMonitor',
@@ -94,7 +94,11 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                         if(res.status === "CONTENT"){
                             getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryTotal).then((data) => {
                                 handleResponse(data, (res) => {
-                                    this.toMemoryValue = res.content.value
+                                    if(res.status === "CONTENT"){
+                                        this.toMemoryValue = res.content.value
+                                    }else{
+                                        this.toMemoryValue = 5397786;
+                                    }
                                     getDeviceStatus(this.selectedAgentId, deviceMonitor.memoryFree).then((data) => {
                                         handleResponse(data, (res) => {
                                             let nowMemoryvalue = res.content.value;
@@ -112,7 +116,7 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
                             })
                             
                         }else{
-                            swal("", "memory monitor function "+res.status, 'error')
+                            swal("", "memory monitor function "+res.status.toLowerCase(), 'error')
                         }
                         
                     })
@@ -310,8 +314,11 @@ import { deviceDetail } from '../../assets/js/deviceProperty';
         },
 
         destroyed(){
-            this.stopDeviceMonitor();
-            this.selectedAgentId = "";
+            if(this.selectedAgentId != ""){
+                this.stopDeviceMonitor();
+                this.selectedAgentId = "";
+            }
+            
         }
     }
 </script>
