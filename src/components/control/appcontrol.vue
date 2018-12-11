@@ -161,7 +161,8 @@
 
 <script>
     import selectGroup from '../../common/select-group'
-    import {appControl, disableAppArray, getRepoAppUrl, getRepoTokenUrl, repoAppBaseDownloadUrl} from '@/assets/js/deviceProperty'
+    import {getRepoAppUrl, getRepoTokenUrl, repoAppBaseDownloadUrl} from '@/assets/js/config'
+    import {appControl, disableAppArray} from '@/assets/js/deviceProperty'
     import handleResponse from '../restfulapi/handleResponse'
     import { getDeviceStatus, setDeviceStatus } from '../restfulapi/deviceStatusApi';
     import { androidControl } from '../../assets/js/deviceProperty';

@@ -17,6 +17,16 @@
                 sortable>
                 </el-table-column>
 
+               <el-table-column
+                label="Device Name"
+                min-width="120"
+                align="center">
+                    <template slot-scope="scope">
+                       <i class="el-icon-edit c-primary pointer" @click="editClick(scope.row.endpoint)" v-if="scope.row.devName === undefined || scope.row.devName === ''"></i>
+                       {{scope.row.devName}}
+                    </template>
+                </el-table-column>
+                
                 <el-table-column
                 prop="lwM2MmVersion"
                 label="Agent Version"
@@ -43,15 +53,6 @@
                     <template slot-scope="scope">
                         <i class="fa fa-child fa-x c-success"></i>
                         <span >online</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                label="Device Name"
-                min-width="120"
-                align="center">
-                    <template slot-scope="scope">
-                       <i class="el-icon-edit c-primary pointer" @click="editClick(scope.row.endpoint)" v-if="scope.row.devName === undefined || scope.row.devName === ''"></i>
-                       {{scope.row.devName}}
                     </template>
                 </el-table-column>
                 <el-table-column

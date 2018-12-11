@@ -1,4 +1,4 @@
-import {serverUrl} from "../../assets/js/deviceProperty"
+import {serverUrl} from "../../assets/js/config"
 
 let ESServerUrl = serverUrl+"/event"
 let eventSource = null, singleEventSource = null;
