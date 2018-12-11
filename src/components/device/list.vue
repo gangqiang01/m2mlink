@@ -50,7 +50,7 @@
                 min-width="120"
                 align="center">
                     <template slot-scope="scope">
-                       <i class="el-icon-edit c-primary pointer" @click="editClick(scope.row.endpoint)" v-if="scope.row.devName === undefined"></i>
+                       <i class="el-icon-edit c-primary pointer" @click="editClick(scope.row.endpoint)" v-if="scope.row.devName === undefined || scope.row.devName === ''"></i>
                        {{scope.row.devName}}
                     </template>
                 </el-table-column>

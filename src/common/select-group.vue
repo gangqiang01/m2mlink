@@ -19,8 +19,10 @@
                 <el-option 
                     v-for="item in deviceOptions"
                     :key="item.endpoint"
-                    :label="item.endpoint"
+                    :label="item.devName"
                     :value="item.endpoint">
+                    <span style="float: left">{{ item.devName}}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.endpoint }}</span>
                 </el-option>
 
             </el-select>
