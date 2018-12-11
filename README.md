@@ -15,4 +15,7 @@ npm run dev
 # build for production with minification
 npm run build
 
+## Config
+
+modify src/assets/js/deviceProperty.js  
 

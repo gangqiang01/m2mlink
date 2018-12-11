@@ -32,7 +32,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 },
             };
-            apiPut("/api/clients", data, config).then((data) => {
+            apiPut("/api/clients/devName", data, config).then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);
