@@ -108,7 +108,9 @@
                         <el-input-number 
                         v-model="brightness" 
                         @change="switchChange(brightness, 'brightness')" 
-                        :min="1" :max="255"
+                        :min="1" 
+                        :max="255"
+                        :step="5"
                         class="counter"
                         >
                         </el-input-number>

@@ -29,7 +29,7 @@ window.moment = moment;
 
 // axios.defaults.baseURL = serverUrl;
 // axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
-axios.defaults.timeout = 1000 * 20;
+axios.defaults.timeout = 1000 * 10;
 // axios.defaults.crossDomain = true;
 // axios.defaults.async = true
 // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';

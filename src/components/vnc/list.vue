@@ -81,9 +81,9 @@
             //         })
                     
             //     })
-            let deviceId = this.selectedAgentId.split(":").join("");
-            let path = "websockify/?token=" + deviceId;
-            this.startVNC("172.21.73.109", 9191, "", path);
+                let deviceId = this.selectedAgentId.split(":").join("");
+                let path = "websockify/?token=" + deviceId;
+                this.startVNC("172.21.73.109", 9191, "", path);
             },
 
             updateDesktopName(e) {

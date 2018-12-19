@@ -17,5 +17,6 @@ npm run build
 
 ## Config
 
-modify src/assets/js/deviceProperty.js  
+modify app repo server url、app download server url and web server url 
+config file is src/assets/js/deviceProperty.js  
 

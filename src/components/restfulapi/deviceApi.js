@@ -25,7 +25,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
         return new Promise((resolve, reject) => {
             let data = {
                 endpoint: agentId,
-                devName: deviceName
+                devname: deviceName
             }
             let config = {
                 headers: {
