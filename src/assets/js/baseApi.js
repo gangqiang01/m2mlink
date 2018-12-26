@@ -1,8 +1,18 @@
 import Qs from "qs"
 
 
-let apiGet = function(url, object) {
-    let geturl;
+let apiGet = function(url, object, config) {
+    let geturl, fconfig;
+    if(config == undefined){
+        fconfig = {
+            headers: {
+                'Content-Type': 'application/json; charset=UTF-8',
+            },
+        };
+        
+    }else{
+        fconfig = config;
+    }
     axios.defaults.headers['accesstoken'] = cookie.getCookie("token");
     if(object != undefined){
         let array = [],myurl;
@@ -16,7 +26,7 @@ let apiGet = function(url, object) {
     }
     geturl = encodeURI(geturl);
     return new Promise((resolve, reject) => {
-        axios.get(geturl).then((response) => {
+        axios.get(geturl, fconfig).then((response) => {
             resolve(response)
         }).catch((err) => {
             resolve(err.response)

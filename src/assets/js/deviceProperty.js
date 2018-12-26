@@ -34,7 +34,12 @@ const allProperty = {
         pkgName: '/5/0/6',
         pkgVersion: '/5/0/7',
         firmwareUpdateProtocolSupport: '/5/0/8',
-        firmwareUpdateDeliveryMethod: '/5/0/9'
+        firmwareUpdateDeliveryMethod: '/5/0/9',
+        protocal: '/5/1/8',
+        baseURL: '/5/1/1',
+        boardname: '/5/1/0',
+        bspversion: '/5/1/7',
+        
     },
     
     location: {
@@ -64,6 +69,7 @@ const allProperty = {
         boardName: '/40001/0/27004',
         systemModel: '/40001/0/27005',
         agentVersion: '/40001/0/27006',
+        bspVersion: '/40001/0/27007',
     },
     
     androidSystemControl: {
@@ -96,6 +102,7 @@ const allProperty = {
     }, 
 }
 
+// get device Detail circle exec
 const deviceDetail = {
     manufacturer: '/3/0/0',
     systemVersion: '/40001/0/27003',
@@ -137,7 +144,23 @@ const appControl = {
 }
 
 const actionDevice= {
-    reboot: '/3/0/4'
+    reboot: '/3/0/4',
+    updateBSP: '/5/1/2'
+}
+
+
+// get bsp info circle exec
+const bspUpdate = {
+    systemVersion: '/40001/0/27003',
+    boardName: '/40001/0/27004',
+    bspVersion: '/40001/0/27007'
+}
+
+
+// exec bsp write circle exec
+const bspInfoWrite = {
+    deployName: '/5/1/6',
+    updateBSPVersion: '/5/1/7' 
 }
 
 // forbit uninstall app names
@@ -152,6 +175,8 @@ export {
     appControl,
     actionDevice,
     disableAppArray,
+    bspUpdate,
+    bspInfoWrite,
 }
 
 

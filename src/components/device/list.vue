@@ -86,7 +86,7 @@
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="dialogDeviceDetailVisible = false">确 定</el-button>
+                    <el-button type="primary" @click="dialogDeviceDetailVisible = false">Confirm</el-button>
                 </div>
             </el-dialog>
             <div class="m-t-10 cf">
@@ -104,15 +104,15 @@
             </div> 
         </div>
 
-        <el-dialog title="Edit Device Name" :visible.sync="dialogDeviceNameVisible">
+        <el-dialog title="Edit device name" :visible.sync="dialogDeviceNameVisible">
             <el-form>
                 <el-form-item label="device name:" :label-width="formLabelWidth">
                     <el-input v-model="deviceName" autocomplete="off" style="width: 320px"></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogDeviceNameVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editDeviceName()">确 定</el-button>
+                <el-button @click="dialogDeviceNameVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="editDeviceName()">Confirm</el-button>
             </div>
         </el-dialog>
     </div>  

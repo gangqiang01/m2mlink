@@ -181,14 +181,14 @@
            switchChange(setSensorVal, cid){
                 if(androidControl[cid] === undefined){
                     swal("", "this function is not supported", 'info').then(() => {
-                        this[cid] = !this[cid];
+                        this[cid] = this.$options.data()[cid];
                     });
                     return;
                 }
                 let setSensorId = androidControl[cid];
                 if(this.selectedAgentId == ''){
                     swal("","Please select your device","info").then(() => {
-                        this[cid] = !this[cid];
+                        this[cid] = this.$options.data()[cid];
                     })
                     return;
                 }
@@ -199,7 +199,7 @@
                             swal("","success", "success")
                         }else{
                             swal("", cid+" function "+res.status.toLowerCase(), 'error').then(() => {
-                                this[cid] = !this[cid];
+                                this[cid] = this.$options.data()[cid];
                             })
                         }
                     })

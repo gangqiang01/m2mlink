@@ -2,6 +2,7 @@ import login from '@/components/account/login'
 
 import batchList from '@/components/batch/list'
 import appControl from  '@/components/control/appcontrol' 
+import systemUpdate from '@/components/control/systemupdate'
 import monitor from  '@/components/control/monitor' 
 import remoteControl from  '@/components/control/remotecontrol' 
 import deviceList from  '@/components/device/list' 
@@ -43,6 +44,14 @@ let childRoute = [
         name: 'appControl',
         meta: {
             menuName: "control-appcontrol"
+        }
+    },
+    {
+        path: 'control/systemupdate',
+        component: systemUpdate,
+        name: 'systemUpdate',
+        meta: {
+            menuName: "control-systemupdate"
         }
     },
     {

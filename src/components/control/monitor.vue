@@ -11,7 +11,7 @@
                         <span>Line Chart</span>
                         <div class="fr p-r-5">
                             <span class="m-r-10">Set Timeout:</span>
-                            <el-radio-group v-model="fullTimeout" size="small" @change="setTimeout(fullTimeout)">
+                            <el-radio-group v-model="fullTimeout" size="small" @change="setTimeout('fullTimeout')">
                                 <el-radio-button label="3 s"></el-radio-button>
                                 <el-radio-button label="5 s"></el-radio-button>
                                 <el-radio-button label="10 s"></el-radio-button>
@@ -258,17 +258,16 @@
                 this.startDeviceMonitor()
             },
 
-            setTimeout(setSensorVal){
+            setTimeout(cid){
                 if(this.selectedAgentId == ''){
-                    _g.swalInfoDo("Please select your device").then(() => {
-                        this[cid] = !this[cid];
+                    swal('',"Please select your device", "info").then(() => {
+                        this[cid] = this.$options.data()[cid];
                     })
                     return;
                 }
                 setDeviceStatus(this.selectedAgentId, deviceMonitor.globleTimeout, this.timeout).then((data) => {
                     handleResponse(data, (res) => {
                         if(res.status == "CHANGED"){
-                            this.fullTimeout = setSensorVal;
                             this.startDeviceMonitor()
                         }
                     })

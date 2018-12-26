@@ -13,89 +13,42 @@
                     class="el-menu-vertical"  
                     :unique-opened="isUnique"
                     :collapse="isCollapse">
-                    <!-- <el-submenu index="device">
-                        <template slot="title">
-                            <i class="fa fa-tasks" aria-hidden="true"></i>
-                            <span slot="title">Device management</span>
-                        </template>
-                        <el-menu-item-group >
-                            <router-link to="/main/device/list">
-                                <el-menu-item index="device-devicelist">
-                                    Device List
-                                </el-menu-item>
-                            </router-link> -->
-                            <!-- <router-link to="/main/devicegroup/list">
-                                <el-menu-item index="device-grouplist"> 
-                                    Device Group
-                                </el-menu-item>
-                            </router-link> -->
-                        <!-- </el-menu-item-group>
-                    </el-submenu>
-                    <el-submenu index="control" >
-                        <template slot="title">
-                            <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
-                            <span slot="title">Device Control</span>
-                        </template>
-                        <el-menu-item-group>
-                            <router-link to="/main/control/monitor">
-                                <el-menu-item index="control-monitor">
-                                    Device monitor
-                                </el-menu-item>
-                            </router-link>
-                            <router-link to="/main/control/remotecontrol">
-                                <el-menu-item index="control-remotecontrol"> 
-                                    Remote Control                                   
-                                </el-menu-item>
-                            </router-link>
-                            <router-link to="/main/control/appcontrol">
-                                <el-menu-item index="control-appcontrol"> 
-                                    App Control
-                                </el-menu-item>
-                            </router-link>
-                        </el-menu-item-group>
-                    </el-submenu> -->
-                    <!-- <router-link to="/main/batch/list">
-                        <el-menu-item index="batchList">
-                            <i class="fa fa-window-restore" aria-hidden="true"></i>
-                            <span slot="title">Batch Control</span>
-                        </el-menu-item>
-                    </router-link>   -->
                     <router-link to="/main/device/list">
                         <el-menu-item index="device-devicelist">
-                            <i class="fa fa-tasks" aria-hidden="true"></i>
+                            <i class="fa fa-tasks m-r-10" ></i>
                             <span slot="title">Device List</span>
                         </el-menu-item>
                     </router-link>
                     <router-link to="/main/control/monitor">
                         <el-menu-item index="control-monitor">
-                            <i class="fa fa-line-chart c-blue m-r-10" ></i>
+                            <i class="fa fa-line-chart m-r-10" ></i>
                             <span slot="title">Device monitor</span>
                         </el-menu-item>
                     </router-link>
                     <router-link to="/main/control/remotecontrol">
                         <el-menu-item index="control-remotecontrol"> 
-                            <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+                            <i class="fa fa-hand-pointer-o m-r-10"></i>
                             <span slot="title">Remote Control</span>                                   
                         </el-menu-item>
                     </router-link>
                     <router-link to="/main/control/appcontrol">
                         <el-menu-item index="control-appcontrol"> 
-                            <i class="fa fa-android c-blue m-r-10" ></i>
+                            <i class="fa fa-android m-r-10" ></i>
                             <span slot="title">App Control</span>
+                        </el-menu-item>
+                    </router-link>
+                    <router-link to="/main/control/systemupdate">
+                        <el-menu-item index="control-systemupdate"> 
+                            <i class="fa fa-microchip m-r-10"></i>
+                            <span slot="title">BSP Update</span>
                         </el-menu-item>
                     </router-link>
                     <router-link to="/main/vnc/list">
                         <el-menu-item index="vncList">
-                            <i class="fa fa-desktop" aria-hidden="true"></i>
+                            <i class="fa fa-desktop m-r-10"></i>
                             <span slot="title">KVM</span>
                         </el-menu-item>
                     </router-link>
-                    <!-- <router-link to="/main/terminal/list">
-                        <el-menu-item index="terminalList">
-                            <i class="fa fa-terminal" aria-hidden="true"></i>
-                            <span slot="title">Terminal</span>
-                        </el-menu-item>
-                    </router-link> -->
                 </el-menu>
             </div>
             <div class="content"  v-loading="showLoading">

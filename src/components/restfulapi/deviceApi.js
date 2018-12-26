@@ -24,7 +24,6 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
     let editDeviceNameApi = function(agentId, deviceName){
         return new Promise((resolve, reject) => {
             let data = {
-                endpoint: agentId,
                 devname: deviceName
             }
             let config = {
@@ -32,7 +31,7 @@ import {apiGet, apiPut} from "../../assets/js/baseApi";
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                 },
             };
-            apiPut("/api/clients/devName", data, config).then((data) => {
+            apiPut("/api/clients/"+agentId+"/devname", data, config).then((data) => {
                 resolve(data);
             }).catch((error) => {
                 resolve(err.response);
