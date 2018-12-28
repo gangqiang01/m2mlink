@@ -44,7 +44,9 @@
                         <el-table-column
                         prop="bspVersion"
                         label="BSP Version"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                        >
                         </el-table-column>
                         <el-table-column
                         label="BSP Action"
@@ -72,6 +74,7 @@
                         prop="deviceId"
                         label="Device ID"
                         min-width="120"
+                        sortable
                         >
                         </el-table-column>
 
@@ -79,6 +82,7 @@
                         prop="deployname"
                         label="Deploy Name"
                         min-width="120"
+                        sortable
                         >
                         </el-table-column>
                  
@@ -92,12 +96,16 @@
                         <el-table-column
                         prop="version"
                         label="BSP Version"
-                        min-width="140">
+                        min-width="140"
+                        sortable
+                        >
                         </el-table-column>
                       
                         <el-table-column
                         label="Update Time"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                         >
                             <template slot-scope="scope">
                                 {{scope.row.ts|time}}
                             </template>
@@ -105,18 +113,22 @@
 
                         <el-table-column
                         label="Update Status"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                        >
                             <template slot-scope="scope">
                                 <img src="@/assets/imgs/loading1.gif" alt=""style="width:50px;height:10px;"v-if="scope.row.updstatus==0">
-                                <span v-if="scope.row.updstatus==2">Finished</span>
-                                <span v-if="scope.row.updstatus==1" class="badge">Failed</span>
+                                <span v-if="scope.row.updstatus==2" class="badge bg-green">Success</span>
+                                <span v-if="scope.row.updstatus==1" class="badge bg-DimGray">Failed</span>
                                 <!-- {{scope.row.upstatus|BSPUpdateStatus}} -->
                             </template>
                         </el-table-column>
 
                         <el-table-column
                         label="Error Status"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                        >
                             <template slot-scope="scope">
                                 {{scope.row.errorcode|BSPErrorStatus}}
                             </template>
@@ -145,7 +157,7 @@
     .badge{
         display: inline-block;
         min-width: 10px;
-        padding: 3px 7px;
+        padding: 5px 8px;
         font-size: 12px;
         font-weight: 700;
         line-height: 1;
@@ -153,7 +165,7 @@
         text-align: center;
         white-space: nowrap;
         vertical-align: middle;
-        background-color: #777;
+        // background-color: #777;
         border-radius: 10px;
     }
 </style>
@@ -165,8 +177,8 @@
     import {getDeviceStatus, setDeviceStatus, execDeviceStatus} from '../restfulapi/deviceStatusApi';
     import {androidControl, bspInfoWrite, actionDevice} from '../../assets/js/deviceProperty';
     import {getRepoBSPConfigApi, getBSPUpdateStatus} from '../restfulapi/updateBSPApi'
-import { setInterval, clearInterval } from 'timers';
-import { defaultCipherList } from 'constants';
+    import { setInterval, clearInterval } from 'timers';
+    import { defaultCipherList } from 'constants';
 
     export default{
         name: 'controlAppcontrol',
@@ -200,12 +212,15 @@ import { defaultCipherList } from 'constants';
                             if(res.status === "CONTENT"){
                                 this[key] = res.content.value;
                                 i++;
-                                console.log(bsplength)
                                 if(i == bsplength){
                                     this.getRepoBSP();
                                 }
                             }else{
-                                swal("",res.errmsg, "error")
+                                if(res.status != undefined){
+                                    swal("",res.errmsg, "error")
+                                }else{
+                                    swal("", res, "error")
+                                }
                             }
                             
                         })
@@ -214,9 +229,8 @@ import { defaultCipherList } from 'constants';
             },
             //get repo bsp
             getRepoBSP(){
-                getRepoBSPConfigApi().then((data) => {
+                getRepoBSPConfigApi(this.boardName).then((data) => {
                     handleResponse(data, (res) => {
-                        console.log(this.boardName)
                         if(res.content.boardname != this.boardName){
                             swal("", "get bsp in repo error", "error");
                             return;
@@ -224,13 +238,13 @@ import { defaultCipherList } from 'constants';
                         let bspUpdateArray = [];
                         let repoBSPVersionArray = res.content.versions;
                         for(let i=0; i<repoBSPVersionArray.length; i++){
-                            if(this.compareBSPVersion(repoBSPVersionArray[i], this.bspVersion)){
+                            // if(this.compareBSPVersion(repoBSPVersionArray[i], this.bspVersion)){
                                 let bspInfo = {
                                     bspName: this.boardName,
                                     bspVersion: repoBSPVersionArray[i]
                                 }
                                 bspUpdateArray.push(bspInfo)
-                            }
+                            // }
                         }
                         this.bspTableData = bspUpdateArray;
 
@@ -253,12 +267,16 @@ import { defaultCipherList } from 'constants';
                 return false;
             },
             execBSPUpdate(cid){
-                if(this.selectedDeviceId == ''){
+                if(this.selectedDeviceId === ''){
                     swal("","Please select your device","info")
                     return;
                 }
                 if(actionDevice[cid] === undefined){
                     swal("", "this function is not supported", 'info');
+                    return;
+                }
+                if(this.deployName === ''){
+                    swal("", "please input deploy name", "info");
                     return;
                 }
                 let result = 0;
@@ -272,11 +290,24 @@ import { defaultCipherList } from 'constants';
                                     execDeviceStatus(this.selectedAgentId, actionDevice[cid]).then((data) => {
                                         handleResponse(data, (res) => {
                                             if(res.status === "CHANGED"){
+                                                this.getUpdateBSPStatus();
                                                 this.activeName = "bspUpdateHistory";
                                                 this.timer = setInterval(() => {this.getUpdateBSPStatus()},5000)
+                                            }else{
+                                                if(res.status != undefined){
+                                                    swal("",res.errmsg, "error")
+                                                }else{
+                                                    swal("", res, "error")
+                                                }
                                             }
                                         })
                                     })
+                                }
+                            }else{
+                                if(res.status != undefined){
+                                    swal("",res.errmsg, "error")
+                                }else{
+                                    swal("", res, "error")
                                 }
                             } 
                         })
@@ -286,11 +317,10 @@ import { defaultCipherList } from 'constants';
                 
             },
             getUpdateBSPStatus(){
-                getBSPUpdateStatus(this.selectedAgentId, this.updateBSPVersion, this.deployName).then((data) => {
+                getBSPUpdateStatus(this.selectedAgentId).then((data) => {
                     handleResponse(data, (res) => {
-                        this.bspHistoryTableData = [];
-                        this.bspHistoryTableData.push(res);
-                        console.log(this.bspHistoryTableData);
+                        this.bspHistoryTableData = res;
+                        // this.bspHistoryTableData.push(res);
                         if(res.updstatus == 2 || res.updstatus == 1){
                             clearInterval(this.timer);
                         }
@@ -310,8 +340,21 @@ import { defaultCipherList } from 'constants';
                 Object.assign(this.$data, this.$options.data())
                 this.selectedAgentId = msg;
                 this.getDeviceBspInfo();
+                this.getUpdateBSPStatus();
             },
 
+        },
+
+        destroyed(){
+            clearInterval(this.timer);
+        },
+
+        mounted() {
+            window.addEventListener('keyup', (e) => {
+                if (e.keyCode === 13) {
+                    this.execBSPUpdate('updateBSP');
+                }
+            })
         },
 
     }

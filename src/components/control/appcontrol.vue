@@ -99,7 +99,9 @@
                         <el-table-column
                         prop="appname"
                         label="App Name"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                        >
                         </el-table-column>
 
                         <el-table-column
@@ -110,7 +112,9 @@
                         <el-table-column
                         prop="version"
                         label="App Version"
-                        min-width="120">
+                        min-width="120"
+                        sortable
+                        >
                         </el-table-column>
                         <el-table-column
                         label="App Action"
@@ -329,6 +333,12 @@
                                             }
                                             this.getSensorStatus();
                                         })
+                                    }else{
+                                        if(res.status != undefined){
+                                            swal("",res.errmsg, "error")
+                                        }else{
+                                            swal("", res, "error")
+                                        }
                                     }
                                 })
                                 
@@ -342,7 +352,11 @@
                             if(res.status == "CHANGED"){
                                 swal("","success","success")
                             }else{
-                                swal("", cid+" function "+res.status.toLowerCase(), 'error')
+                                if(res.status != undefined){
+                                    swal("",res.errmsg, "error")
+                                }else{
+                                    swal("", res, "error")
+                                }
                             }
                         })
                         

@@ -198,9 +198,15 @@
                         if(res.status === "CHANGED"){
                             swal("","success", "success")
                         }else{
-                            swal("", cid+" function "+res.status.toLowerCase(), 'error').then(() => {
-                                this[cid] = this.$options.data()[cid];
-                            })
+                            if(res.status != undefined){
+                                swal("", cid+" function "+res.msg.toLowerCase(), 'error').then(() => {
+                                    this[cid] = this.$options.data()[cid];
+                                })
+                            }else{
+                                swal("", cid+" function "+res.toLowerCase(), 'error').then(() => {
+                                    this[cid] = this.$options.data()[cid];
+                                })
+                            }
                         }
                     })
                     
@@ -224,6 +230,12 @@
                             handleResponse(data, (res) => {
                                 if(res.status === "CHANGED"){
                                     swal("","success", "success")
+                                }else{
+                                    if(res.status != undefined){
+                                        swal("",res.errmsg, "error")
+                                    }else{
+                                        swal("", res, "error")
+                                    }
                                 }
                             })
                            

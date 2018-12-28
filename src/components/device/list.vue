@@ -81,7 +81,7 @@
                     <el-form-item label="Firmware Version:" :label-width="formLabelWidth">
                         <span>{{form.firmwareVersion}}</span>
                     </el-form-item>
-                    <el-form-item label="Support modes:" :label-width="formLabelWidth">
+                    <el-form-item label="Support Modes:" :label-width="formLabelWidth">
                         <span>{{form.supportedModes}}</span>
                     </el-form-item>
                 </el-form>
@@ -186,9 +186,13 @@
             },
 
             editDeviceName(){
+                if(this.deviceName === ''){
+                    swal("", 'please input device name', 'info');
+                    return;
+                }
                 editDeviceNameApi(this.selectedAgent, this.deviceName).then((data) => {
                     handleResponse(data, (res) => {
-                        if(res.status === "CHANGE"){
+                        if(res.status === "CHANGED"){
                             this.getAllDevices();
                         }
                     })
@@ -216,7 +220,15 @@
             ...mapState({
                 onlineDeviceCount: "onlineDeviceCount"
             }),   
-        }  
+        },
+        
+        mounted() {
+            window.addEventListener('keyup', (e) => {
+                if (e.keyCode === 13) {
+                    this.editDeviceName()
+                }
+            })
+        },
     }
 </script>
 <style lang='scss'>

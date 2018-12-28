@@ -6,7 +6,7 @@ let handleResponse = function(res, cb, errcb){
         console.error("data is undefined")
         return;
     }
-    if(res.status == 200){
+    if(res.status == 200 || res.status == 400 || res.status == 500){
         cb(res.data)
     }else{
         if(typeof(errcb) == 'function'){
@@ -25,7 +25,7 @@ let handleError = function(res) {
             });
             
             break
-        case 400:
+        // case 400:
         default :
             console.log(res)
     }
